@@ -3,7 +3,17 @@ import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
-
+function MovieCard({ title, rating, posterUrl }) {
+  return (
+    <div className='movie-card'>
+      <img src={posterUrl} alt={title} className='movie-poster' />
+      <div className='movie-info'>
+        <h3>{title}</h3>
+        <p>⭐ {rating}</p>
+      </div>
+    </div>
+  )
+}
 function App() {
   const [count, setCount] = useState(0)
 
@@ -42,9 +52,13 @@ function App() {
         </aside>
         {/* main part */}
         {/* ------------------------------------------------------------------------------------------------------ */}
+        {/* the whole container of the main part */}
         <main className='main-content'>
+          {/* the whole container of the hero part*/}
           <div className='hero-banner'>
+            {/* the container for the movie and the desc */}
             <div className='hero-content'>
+              {/* the red thingy that says new Release */}
               <span className='hero-badge'>New Release</span>
               <h1 className="hero-title">The Matrix Resurrections</h1>
               <p className="hero-desc">Return to a world of two realities: one, everyday life; the other, what lies behind it. To find out if his reality is a construct, Mr. Anderson will have to choose to follow the white rabbit once more.</p>
@@ -54,6 +68,29 @@ function App() {
               </div>
             </div>
           </div>
+          <section className='movies-section'>
+            <h2 className='section-title'>Trending Now</h2>
+            <div className='movies-grid'>
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
+
+            </div>
+          </section>
         </main>
       </div>
       {/* ------------------------------------------------------------------------------------------------------ */}
