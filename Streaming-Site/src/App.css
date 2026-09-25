@@ -470,7 +470,9 @@ body {
         background-color: rgba(18, 20, 29, 0.75);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
-        transform: translateZ(0); /* Hardware acceleration fix for mobile Chrome/Safari */
+        transform: translate3d(0,0,0);
+        -webkit-transform: translate3d(0,0,0);
+        isolation: isolate;
         
         border-radius: 25px 25px 0 0;
         border-right: none;
