@@ -14,7 +14,11 @@ body {
 body::before {
     content: '';
     position: fixed;
-    top: -20px; left: -20px; right: -20px; bottom: -20px; /* Oversize slightly to hide blurred edges */
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    /* Oversize slightly to hide blurred edges */
     background-image: url("./assets/bg.jpg");
     background-size: cover;
     background-position: center;
@@ -26,14 +30,13 @@ body::before {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    }
+}
 
 .navbar {
     border-radius: 0 0 20px 20px;
     height: 80px;
     background-color: rgba(18, 20, 29, 0.45);
     backdrop-filter: blur(50px);
-
     border-bottom: 1px solid #1f2230;
     display: flex;
     align-items: center;
@@ -77,7 +80,8 @@ body::before {
     margin: 0 10px;
     width: 100%;
     max-width: 450px;
-    min-width: 150px; /* Allow smooth shrinking! */
+    min-width: 150px;
+    /* Allow smooth shrinking! */
     transition: all 0.3s ease;
     padding: 12px 24px;
     border-radius: 30px;
@@ -92,7 +96,7 @@ body::before {
 .search-input:focus {
     background-color: rgba(255, 255, 255, 0.1);
     border-color: #e50914;
-    }
+}
 
 .search-input::placeholder {
     color: rgba(255, 255, 255, 0.4);
@@ -141,7 +145,7 @@ body::before {
     top: 80px;
     height: calc(100vh - 80px);
     overflow-y: auto;
-    width: 240px;
+    width: 140px;
     background-color: rgba(18, 20, 29, 0.3);
     padding: 30px 20px;
     display: flex;
@@ -448,6 +452,7 @@ body::before {
     .navbar {
         backdrop-filter: blur(30px);
     }
+
     /* desktop-search display: none moved to 340px */
 
     /* search-icon-btn display: flex moved to 340px */
@@ -752,12 +757,15 @@ body::before {
 }
 
 @media (max-width: 430px) {
+
     /* Switch the text to SD instead of hiding the search bar! */
     .desktop-logo {
         display: none;
     }
+
     .mobile-logo {
         display: inline;
-        font-size: 26px; /* Keep it nice and big */
+        font-size: 26px;
+        /* Keep it nice and big */
     }
 }
