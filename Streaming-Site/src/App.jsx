@@ -28,10 +28,12 @@ function App() {
           <div className='avatar'>U</div>
         </div>
       </nav>
-      {/* ------------------------------------------------------------------------------------------------------ */}
+
       {/* BODY PART */}
       <div className='app-body'>
         {/* left part */}
+        {/* ------------------------------------------------------------------------------------------------------ */}
+
         <aside className="sidebar">
           <button className="sidebar-item active"> Home</button>
           <button className="sidebar-item"> Movies</button>
@@ -39,8 +41,19 @@ function App() {
           <button className="sidebar-item"> Watchlist</button>
         </aside>
         {/* main part */}
+        {/* ------------------------------------------------------------------------------------------------------ */}
         <main className='main-content'>
-          <h2>Hero Banner and Movie Grid coming soon...</h2>
+          <div className='hero-banner'>
+            <div className='hero-content'>
+              <span className='hero-badge'>New Release</span>
+              <h1 className="hero-title">The Matrix Resurrections</h1>
+              <p className="hero-desc">Return to a world of two realities: one, everyday life; the other, what lies behind it. To find out if his reality is a construct, Mr. Anderson will have to choose to follow the white rabbit once more.</p>
+              <div className='hero-buttons'>
+                <button className='btn-primary'>▶ Play Now</button>
+                <button className="btn-secondary">＋ Watchlist</button>
+              </div>
+            </div>
+          </div>
         </main>
       </div>
       {/* ------------------------------------------------------------------------------------------------------ */}
