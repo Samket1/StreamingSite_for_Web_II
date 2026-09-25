@@ -470,8 +470,6 @@ body {
         background-color: rgba(18, 20, 29, 0.75);
         backdrop-filter: blur(15px);
 
-        -webkit-
-
         border-radius: 25px 25px 0 0;
         border-right: none;
         border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -586,7 +584,7 @@ body {
     }
 
     /* Style the tiny scrollbar to look sleek */
-    .hero-desc::-webkit-scrollbar {
+    .hero-desc::scrollbar {
         width: 4px;
     }
 
