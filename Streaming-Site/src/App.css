@@ -507,3 +507,27 @@ body {
     .search-overlay-input { font-size: 16px; padding: 15px 15px 15px 50px; }
     .search-overlay-tags button { font-size: 12px; padding: 6px 15px; }
 }
+
+
+@media (max-width: 650px) {
+    .hero-desc {
+        /* Line height is 1.4, so 2.8em is exactly two lines! */
+        max-height: 2.8em; 
+        line-height: 1.4em;
+        overflow-y: auto;
+        padding-right: 8px; /* Leave space for the tiny scrollbar */
+    }
+    
+    /* Style the tiny scrollbar to look sleek */
+    .hero-desc::-webkit-scrollbar {
+        width: 4px;
+    }
+    .hero-desc::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+    }
+    .hero-desc::-webkit-scrollbar-thumb {
+        background: #e50914;
+        border-radius: 4px;
+    }
+}
