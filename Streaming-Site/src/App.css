@@ -7,25 +7,32 @@
 body {
     font-family: 'Inter', system-ui, sans-serif;
     background-color: #0b0c10;
+    color: #ffffff;
+}
+
+/* Dedicated blurred background layer to prevent stacking context bugs! */
+body::before {
+    content: '';
+    position: fixed;
+    top: -20px; left: -20px; right: -20px; bottom: -20px; /* Oversize slightly to hide blurred edges */
     background-image: url("./assets/bg.jpg");
     background-size: cover;
-    background-attachment: fixed;
     background-position: center;
-    color: #ffffff;
+    filter: blur(8px);
+    z-index: -1;
 }
 
 .app-container {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    backdrop-filter: blur(8px);
-}
+    }
 
 .navbar {
     border-radius: 0 0 20px 20px;
     height: 80px;
     background-color: rgba(18, 20, 29, 0.45);
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(50px);
 
     border-bottom: 1px solid #1f2230;
     display: flex;
@@ -67,7 +74,11 @@ body {
 }
 
 .search-input {
-    width: 450px;
+    margin: 0 10px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 150px; /* Allow smooth shrinking! */
+    transition: all 0.3s ease;
     padding: 12px 24px;
     border-radius: 30px;
     background-color: rgba(255, 255, 255, 0.05);
@@ -81,8 +92,7 @@ body {
 .search-input:focus {
     background-color: rgba(255, 255, 255, 0.1);
     border-color: #e50914;
-    width: 450px;
-}
+    }
 
 .search-input::placeholder {
     color: rgba(255, 255, 255, 0.4);
@@ -126,6 +136,7 @@ body {
 }
 
 .sidebar {
+    backdrop-filter: blur(50px);
     position: sticky;
     top: 80px;
     height: calc(100vh - 80px);
@@ -434,13 +445,12 @@ body {
 
 /* --- MOBILE RESPONSIVENESS (Phones) --- */
 @media (max-width: 768px) {
-    .desktop-search {
-        display: none;
+    .navbar {
+        backdrop-filter: blur(30px);
     }
+    /* desktop-search display: none moved to 340px */
 
-    .search-icon-btn {
-        display: flex;
-    }
+    /* search-icon-btn display: flex moved to 340px */
 
     .nav-profile {
         gap: 10px;
@@ -732,4 +742,18 @@ body {
 .search-overlay-title.closing,
 .search-overlay-tags.closing {
     animation: searchPopOut 0.25s cubic-bezier(0.175, 0.885, 0.32, 1) forwards;
+}
+
+/* Shrink the search bar until 340px, then turn it into an icon! */
+@media (max-width: 430px) {
+    .desktop-search {
+        display: none;
+    }
+    .search-icon-btn {
+        display: flex;
+    }
+    /* Hide the logo text on super small screens to save space for the icon if needed */
+    .logo-text {
+        display: none;
+    }
 }
