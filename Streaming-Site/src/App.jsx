@@ -61,19 +61,24 @@ function App() {
         {/* the whole container of the main part */}
         <main className='main-content'>
           {/* the whole container of the hero part*/}
-          <div className='hero-banner'>
-            {/* the container for the movie and the desc */}
-            <div className='hero-content'>
-              {/* the red thingy that says new Release */}
-              <span className='hero-badge'>New Release</span>
-              <h1 className="hero-title">The Matrix Resurrections</h1>
-              <p className="hero-desc">Return to a world of two realities: one, everyday life; the other, what lies behind it. To find out if his reality is a construct, Mr. Anderson will have to choose to follow the white rabbit once more.</p>
-              <div className='hero-buttons'>
-                <button className='btn-primary'>▶ Play Now</button>
-                <button className="btn-secondary">＋ Watchlist</button>
+
+          {movies.length > 0 && (
+            <div
+              className='hero-banner'
+              style={{ backgroundImage: `linear-gradient(to top, #0b0c10 0%, rgba(11, 12, 16, 0.2) 100%), url(${movies[0].movie_banner})` }}
+            >
+              <div className='hero-content'>
+                <span className='hero-badge'>Featured</span>
+                <h1 className="hero-title">{movies[0].title}</h1>
+                <p className="hero-desc">{movies[0].description}</p>
+                <div className='hero-buttons'>
+                  <button className='btn-primary'>▶ Play Now</button>
+                  <button className="btn-secondary">＋ Watchlist</button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
           <section className='movies-section'>
             <h2 className='section-title'>Trending Now</h2>
             <div className='movies-grid'>
