@@ -317,3 +317,193 @@ body {
     font-size: 14px;
     font-weight: bold;
 }
+
+/* --- SEARCH OVERLAY (Like the Reference Image) --- */
+.search-icon-btn {
+    display: none;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(18, 20, 29, 0.7);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20vh;
+}
+
+.close-search-btn {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.search-overlay-title {
+    font-size: 42px;
+    font-weight: 900;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.search-overlay-input-container {
+    position: relative;
+    width: 80%;
+    max-width: 700px;
+}
+
+.search-overlay-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #a0a0a0;
+}
+
+.search-overlay-input {
+    width: 100%;
+    padding: 20px 20px 20px 60px;
+    font-size: 20px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    outline: none;
+}
+
+.search-overlay-input:focus {
+    border-color: #e50914;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.search-overlay-tags {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.search-overlay-tags button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-overlay-tags button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- MOBILE RESPONSIVENESS (Phones) --- */
+@media (max-width: 768px) {
+    .desktop-search { display: none; }
+    .search-icon-btn { display: flex; }
+    
+    .nav-profile { gap: 10px; }
+    .nav-btn { display: none; }
+    .navbar { padding: 0 15px; }
+    
+    /* Shrink the logo for phones */
+    .logo-text { font-size: 16px; }
+    .logo-icon { font-size: 20px; }
+    
+    .app-body { flex-direction: column; }
+    
+    .sidebar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 0;
+        background-color: rgba(18, 20, 29, 0.95);
+        backdrop-filter: blur(15px);
+        border-right: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        z-index: 100;
+        gap: 0;
+    }
+    
+    .sidebar-title { display: none; }
+    
+    .sidebar-item {
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        font-size: 12px;
+        border-radius: 0;
+        padding: 10px;
+        flex: 1;
+        text-align: center;
+    }
+    
+    .sidebar-item.active {
+        border-right: none;
+        border-top: 3px solid #e50914;
+        background-color: transparent;
+    }
+    
+    .main-content {
+        padding: 15px 15px 90px 15px; 
+        gap: 20px;
+    }
+    
+    /* Shrink hero banner */
+    .hero-banner {
+        height: auto;
+        min-height: 280px;
+        padding: 15px;
+        border-radius: 12px;
+    }
+    
+    .hero-title { font-size: 22px; }
+    .hero-desc { font-size: 11px; line-height: 1.4; }
+    .hero-buttons { flex-direction: column; gap: 10px; }
+    .btn-primary, .btn-secondary { font-size: 14px; padding: 10px; }
+    
+    /* Fix movie grid for phones */
+    .movies-grid {
+        grid-template-columns: repeat(2, 1fr); /* Force 2 columns on phone */
+        gap: 15px;
+    }
+    
+    .movie-poster {
+        height: 200px; /* Smaller posters */
+    }
+    
+    .movie-info { padding: 10px; gap: 3px; }
+    .movie-info h3 { font-size: 13px; }
+    .movie-info p { font-size: 12px; }
+    
+    .search-overlay-title { font-size: 24px; padding: 0 15px; margin-bottom: 25px; }
+    .search-overlay-input { font-size: 16px; padding: 15px 15px 15px 50px; }
+    .search-overlay-tags button { font-size: 12px; padding: 6px 15px; }
+}

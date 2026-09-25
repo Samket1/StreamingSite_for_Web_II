@@ -17,6 +17,7 @@ function MovieCard({ title, rating, posterUrl }) {
 }
 function App() {
   const [movies, setMovies] = useState([])
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
   useEffect(() => {
     fetch("https://ghibliapi.vercel.app/films")
       .then(res => res.json())
@@ -36,7 +37,8 @@ function App() {
         </div>
         {/* the search bar */}
         <div className='nav-search'>
-          <input type="text" placeholder='Search movies,series...' className='search-input' />
+          <button className="search-icon-btn" onClick={() => setIsSearchOpen(true)}>🔍</button>
+          <input type="text" placeholder="Search movies, series..." className="search-input desktop-search" onClick={() => setIsSearchOpen(true)} />
         </div>
         {/* profile and Notif */}
         <div className='nav-profile'>
@@ -44,6 +46,24 @@ function App() {
           <div className='avatar'>U</div>
         </div>
       </nav>
+
+      {/* SEARCH OVERLAY */}
+      {isSearchOpen && (
+        <div className="search-overlay">
+          <button className="close-search-btn" onClick={() => setIsSearchOpen(false)}>✕</button>
+          <h1 className="search-overlay-title">Find your next favorite story</h1>
+          <div className="search-overlay-input-container">
+            <span className="search-overlay-icon">🔍</span>
+            <input autoFocus type="text" placeholder="Search movies, TV shows & people..." className="search-overlay-input" />
+          </div>
+          <div className="search-overlay-tags">
+            <button>Ghibli</button>
+            <button>Action</button>
+            <button>Fantasy</button>
+            <button>Romance</button>
+          </div>
+        </div>
+      )}
 
       {/* BODY PART */}
       <div className='app-body'>
