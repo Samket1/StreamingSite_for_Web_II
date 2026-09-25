@@ -32,9 +32,19 @@ function App() {
       {/* BODY PART */}
       <div className='app-body'>
         {/* left part */}
-
+        <aside className="sidebar">
+          <button className="sidebar-item active"> Home</button>
+          <button className="sidebar-item"> Movies</button>
+          <button className="sidebar-item"> Series</button>
+          <button className="sidebar-item"> Watchlist</button>
+        </aside>
+        {/* main part */}
+        <main className='main-content'>
+          <h2>Hero Banner and Movie Grid coming soon...</h2>
+        </main>
       </div>
       {/* ------------------------------------------------------------------------------------------------------ */}
+
 
     </div >
   )
