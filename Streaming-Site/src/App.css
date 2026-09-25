@@ -7,6 +7,10 @@
 body {
     font-family: 'Inter', system-ui, sans-serif;
     background-color: #0b0c10;
+    background-image: url("./assets/bg.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
     color: #ffffff;
 }
 
@@ -21,7 +25,7 @@ body {
     height: 80px;
     background-color: rgba(18, 20, 29, 0.45);
     backdrop-filter: blur(30px);
-    
+
     border-bottom: 1px solid #1f2230;
     display: flex;
     align-items: center;
@@ -284,16 +288,18 @@ body {
 }
 
 .movie-card {
-    background-color: #1a1c23;
+    background-color: rgba(26, 28, 35, 0.45);
     border-radius: 12px;
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(20px);
+
 }
 
 .movie-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.1);
 }
 
 .movie-poster {
@@ -346,7 +352,7 @@ body {
     height: 100vh;
     background: rgba(18, 20, 29, 0.3);
     backdrop-filter: blur(40px);
-    
+
     z-index: 9999;
     display: flex;
     flex-direction: column;
@@ -463,13 +469,14 @@ body {
     .sidebar {
         position: fixed;
         bottom: 0;
+        top: auto;
         left: 0;
         width: 100%;
         height: 70px;
         flex-direction: row;
         justify-content: space-around;
         padding: 0;
-        
+
         /* The Blur Magic */
         background-color: rgba(18, 20, 29, 0.75);
         backdrop-filter: blur(15px);
@@ -498,7 +505,7 @@ body {
 
     .sidebar-item.active {
         border-right: none;
-        
+
         background-color: transparent;
     }
 
@@ -608,6 +615,7 @@ body {
     box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
     transition: all 0.3s ease;
 }
+
 .btn-primary:hover {
     box-shadow: 0 0 30px rgba(229, 9, 20, 0.9);
     background-color: #ff1a25;
@@ -624,31 +632,41 @@ body {
 .logo-text {
     text-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
 }
+
 .logo-highlight {
     text-shadow: 0 0 15px rgba(229, 9, 20, 0.9);
 }
 
 /* 2. Fix mobile sidebar rectangle click flash */
 .sidebar {
-    overflow: hidden; /* Clips the child background so it matches the curved corners */
+    overflow: hidden;
+    /* Clips the child background so it matches the curved corners */
 }
+
 .sidebar-item {
-    -webkit-tap-highlight-color: transparent; /* Removes the ugly default Android/iOS blue flash */
+    -webkit-tap-highlight-color: transparent;
+    /* Removes the ugly default Android/iOS blue flash */
 }
 
 
 /* --- SEARCH OVERLAY ANIMATIONS --- */
 @keyframes overlayFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes searchPopIn {
-    from { 
+    from {
         opacity: 0;
         transform: scale(0.85) translateY(-20px);
     }
-    to { 
+
+    to {
         opacity: 1;
         transform: scale(1) translateY(0);
     }
@@ -660,29 +678,46 @@ body {
 }
 
 /* Give the search bar, title, and tags a bouncy pop-in animation */
-.search-overlay-title, .search-overlay-input-container, .search-overlay-tags {
+.search-overlay-title,
+.search-overlay-input-container,
+.search-overlay-tags {
     animation: searchPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
-    opacity: 0; /* Keep them invisible until animation starts */
+    opacity: 0;
+    /* Keep them invisible until animation starts */
 }
 
 /* Stagger the animations to create a cascading 'waterfall' effect */
-.search-overlay-title { animation-delay: 0.05s; }
-.search-overlay-input-container { animation-delay: 0.1s; }
-.search-overlay-tags { animation-delay: 0.15s; }
+.search-overlay-title {
+    animation-delay: 0.05s;
+}
+
+.search-overlay-input-container {
+    animation-delay: 0.1s;
+}
+
+.search-overlay-tags {
+    animation-delay: 0.15s;
+}
 
 
 /* --- SEARCH OVERLAY CLOSE ANIMATIONS --- */
 @keyframes overlayFadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
 }
 
 @keyframes searchPopOut {
-    from { 
+    from {
         opacity: 1;
         transform: scale(1) translateY(0);
     }
-    to { 
+
+    to {
         opacity: 0;
         transform: scale(0.85) translateY(20px);
     }
@@ -692,6 +727,8 @@ body {
     animation: overlayFadeOut 0.25s ease-out forwards;
 }
 
-.search-overlay-input-container.closing, .search-overlay-title.closing, .search-overlay-tags.closing {
+.search-overlay-input-container.closing,
+.search-overlay-title.closing,
+.search-overlay-tags.closing {
     animation: searchPopOut 0.25s cubic-bezier(0.175, 0.885, 0.32, 1) forwards;
 }
