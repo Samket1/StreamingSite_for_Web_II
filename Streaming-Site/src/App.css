@@ -117,10 +117,14 @@ body {
 .app-body {
     display: flex;
     flex: 1;
-    overflow: hidden;
+    align-items: flex-start;
 }
 
 .sidebar {
+    position: sticky;
+    top: 80px;
+    height: calc(100vh - 80px);
+    overflow-y: auto;
     width: 240px;
     background-color: rgba(18, 20, 29, 0.3);
     padding: 30px 20px;
@@ -612,3 +616,56 @@ body {
 .sidebar-item.active {
     text-shadow: 0 0 15px rgba(229, 9, 20, 0.8);
 }
+
+
+/* --- EXTRA UI FIXES --- */
+
+/* 1. Make Stream glow white, and Dopamine glow red */
+.logo-text {
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+}
+.logo-highlight {
+    text-shadow: 0 0 15px rgba(229, 9, 20, 0.9);
+}
+
+/* 2. Fix mobile sidebar rectangle click flash */
+.sidebar {
+    overflow: hidden; /* Clips the child background so it matches the curved corners */
+}
+.sidebar-item {
+    -webkit-tap-highlight-color: transparent; /* Removes the ugly default Android/iOS blue flash */
+}
+
+
+/* --- SEARCH OVERLAY ANIMATIONS --- */
+@keyframes overlayFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes searchPopIn {
+    from { 
+        opacity: 0;
+        transform: scale(0.85) translateY(-20px);
+    }
+    to { 
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Make the dark blurred background fade in smoothly */
+.search-overlay {
+    animation: overlayFadeIn 0.2s ease-out forwards;
+}
+
+/* Give the search bar, title, and tags a bouncy pop-in animation */
+.search-overlay-title, .search-overlay-input-container, .search-overlay-tags {
+    animation: searchPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+    opacity: 0; /* Keep them invisible until animation starts */
+}
+
+/* Stagger the animations to create a cascading 'waterfall' effect */
+.search-overlay-title { animation-delay: 0.05s; }
+.search-overlay-input-container { animation-delay: 0.1s; }
+.search-overlay-tags { animation-delay: 0.15s; }
