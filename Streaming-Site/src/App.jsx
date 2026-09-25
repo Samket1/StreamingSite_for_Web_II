@@ -17,7 +17,34 @@ function MovieCard({ title, rating, posterUrl }) {
 }
 function App() {
   const [movies, setMovies] = useState([])
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  const [isClosing, setIsClosing] = useState(false);
+
+  const closeSearch = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsSearchOpen(false);
+      setIsClosing(false);
+    }, 250); // wait for CSS animation to finish before removing from DOM
+  };
+
+
+  // Listen for the Escape key to close the search overlay
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        closeSearch();
+      }
+    };
+
+    // Attach the event listener to the window
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup function to prevent memory leaks
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   useEffect(() => {
     fetch("https://ghibliapi.vercel.app/films")
       .then(res => res.json())
@@ -49,8 +76,8 @@ function App() {
 
       {/* SEARCH OVERLAY */}
       {isSearchOpen && (
-        <div className="search-overlay">
-          <button className="close-search-btn" onClick={() => setIsSearchOpen(false)}>✕</button>
+        <div className={`search-overlay ${isClosing ? 'closing' : ''}`}>
+          <button className="close-search-btn" onClick={closeSearch}>✕</button>
           <h1 className="search-overlay-title">Find your next favorite story</h1>
           <div className="search-overlay-input-container">
             <span className="search-overlay-icon">🔍</span>

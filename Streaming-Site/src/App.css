@@ -669,3 +669,29 @@ body {
 .search-overlay-title { animation-delay: 0.05s; }
 .search-overlay-input-container { animation-delay: 0.1s; }
 .search-overlay-tags { animation-delay: 0.15s; }
+
+
+/* --- SEARCH OVERLAY CLOSE ANIMATIONS --- */
+@keyframes overlayFadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes searchPopOut {
+    from { 
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    to { 
+        opacity: 0;
+        transform: scale(0.85) translateY(20px);
+    }
+}
+
+.search-overlay.closing {
+    animation: overlayFadeOut 0.25s ease-out forwards;
+}
+
+.search-overlay-input-container.closing, .search-overlay-title.closing, .search-overlay-tags.closing {
+    animation: searchPopOut 0.25s cubic-bezier(0.175, 0.885, 0.32, 1) forwards;
+}
