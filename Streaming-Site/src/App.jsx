@@ -10,9 +10,15 @@ function App() {
   return (<div className='app-container'>
     <nav className='navbar'>
 
+      {/* the Stream Dopamine Text */}
       <div className="nav-logo">
         <span className="logo-icon">🎬</span>
         <span className="logo-text">Stream<span className="logo-highlight">Dopamine</span></span>
+
+        {/* the search bar */}
+        <div className='nav-search'>
+
+        </div>
       </div>
 
     </nav>
