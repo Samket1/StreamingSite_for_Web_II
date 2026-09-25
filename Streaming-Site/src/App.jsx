@@ -9,6 +9,7 @@ function App() {
 
   return (<div className='app-container'>
     <nav className='navbar'>
+
       <div className="nav-logo">
         <span className="logo-icon">🎬</span>
         <span className="logo-text">Stream<span className="logo-highlight">Dopamine</span></span>
