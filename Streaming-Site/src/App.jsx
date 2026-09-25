@@ -7,29 +7,36 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
-  return (<div className='app-container'>
-    <nav className='navbar'>
+  return (
 
-      {/* the Stream Dopamine Text */}
-      <div className="nav-logo">
-        <span className="logo-icon">🎬</span>
-        <span className="logo-text">Stream<span className="logo-highlight">Dopamine</span></span>
+    < div className='app-container' >
+      {/* ------------------------------------------------------------------------------------------------------ */}
+      {/* TOP PART */}
+      <nav className='navbar'>
+        {/* the Stream Dopamine Text */}
+        <div className="nav-logo">
+          <span className="logo-icon">🎬</span>
+          <span className="logo-text">Stream<span className="logo-highlight">Dopamine</span></span>
+        </div>
+        {/* the search bar */}
+        <div className='nav-search'>
+          <input type="text" placeholder='Search movies,series...' className='search-input' />
+        </div>
+        {/* profile and Notif */}
+        <div className='nav-profile'>
+          <button className='nav-btn'>Notification</button>
+          <div className='avatar'>U</div>
+        </div>
+      </nav>
+      {/* ------------------------------------------------------------------------------------------------------ */}
+      {/* BODY PART */}
+      <div className='app-body'>
+        {/* left part */}
+
       </div>
-      {/* the search bar */}
-      <div className='nav-search'>
-        <input type="text" placeholder='Search movies,series...' className='search-input' />
-      </div>
+      {/* ------------------------------------------------------------------------------------------------------ */}
 
-      {/* profile and Notif */}
-      <div className='nav-profile'>
-        <button className='nav-btn'>Notification</button>
-        <div className='avatar'>U</div>
-      </div>
-
-
-
-    </nav>
-  </div>
+    </div >
   )
 }
 
