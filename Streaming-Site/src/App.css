@@ -17,10 +17,11 @@ body {
 }
 
 .navbar {
+    border-radius: 0 0 20px 20px;
     height: 80px;
-    background-color: rgba(18, 20, 29, 0.6);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    background-color: rgba(18, 20, 29, 0.15);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     border-bottom: 1px solid #1f2230;
     display: flex;
     align-items: center;
