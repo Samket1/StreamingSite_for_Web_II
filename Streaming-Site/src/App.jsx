@@ -7,9 +7,11 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
-  return (<>
-    <h1>hi</h1>
-  </>
+  return (<div className='app-container'>
+    <nav className='navbar'>
+
+    </nav>
+  </div>
   )
 }
 
