@@ -423,38 +423,62 @@ body {
 
 /* --- MOBILE RESPONSIVENESS (Phones) --- */
 @media (max-width: 768px) {
-    .desktop-search { display: none; }
-    .search-icon-btn { display: flex; }
-    
-    .nav-profile { gap: 10px; }
-    .nav-btn { display: none; }
-    .navbar { padding: 0 15px; }
-    
+    .desktop-search {
+        display: none;
+    }
+
+    .search-icon-btn {
+        display: flex;
+    }
+
+    .nav-profile {
+        gap: 10px;
+    }
+
+    .nav-btn {
+        display: none;
+    }
+
+    .navbar {
+        padding: 0 15px;
+    }
+
     /* Shrink the logo for phones */
-    .logo-text { font-size: 16px; }
-    .logo-icon { font-size: 20px; }
-    
-    .app-body { flex-direction: column; }
-    
+    .logo-text {
+        font-size: 16px;
+    }
+
+    .logo-icon {
+        font-size: 20px;
+    }
+
+    .app-body {
+        flex-direction: column;
+    }
+
     .sidebar {
         position: fixed;
+        backdrop-filter: blur(30px);
         bottom: 0;
+        border-radius: 20px;
         left: 0;
         width: 100%;
         height: 70px;
         flex-direction: row;
         justify-content: space-around;
         padding: 0;
-        background-color: rgba(18, 20, 29, 0.95);
+        background-color: rgba(18, 20, 29, 0.75);
         backdrop-filter: blur(15px);
         border-right: none;
         border-top: 1px solid rgba(255, 255, 255, 0.05);
         z-index: 100;
         gap: 0;
     }
-    
-    .sidebar-title { display: none; }
-    
+
+    .sidebar-title {
+        display: none;
+    }
+
     .sidebar-item {
         flex-direction: column;
         justify-content: center;
@@ -465,18 +489,18 @@ body {
         flex: 1;
         text-align: center;
     }
-    
+
     .sidebar-item.active {
         border-right: none;
         border-top: 3px solid #e50914;
         background-color: transparent;
     }
-    
+
     .main-content {
-        padding: 15px 15px 90px 15px; 
+        padding: 15px 15px 90px 15px;
         gap: 20px;
     }
-    
+
     /* Shrink hero banner */
     .hero-banner {
         height: auto;
@@ -484,49 +508,90 @@ body {
         padding: 15px;
         border-radius: 12px;
     }
-    
-    .hero-title { font-size: 22px; }
-    .hero-desc { font-size: 11px; line-height: 1.4; }
-    .hero-buttons { flex-direction: column; gap: 10px; }
-    .btn-primary, .btn-secondary { font-size: 14px; padding: 10px; }
-    
+
+    .hero-title {
+        font-size: 22px;
+    }
+
+    .hero-desc {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        font-size: 14px;
+        padding: 10px;
+    }
+
     /* Fix movie grid for phones */
     .movies-grid {
-        grid-template-columns: repeat(2, 1fr); /* Force 2 columns on phone */
+        grid-template-columns: repeat(2, 1fr);
+        /* Force 2 columns on phone */
         gap: 15px;
     }
-    
+
     .movie-poster {
-        height: 200px; /* Smaller posters */
+        height: 200px;
+        /* Smaller posters */
     }
-    
-    .movie-info { padding: 10px; gap: 3px; }
-    .movie-info h3 { font-size: 13px; }
-    .movie-info p { font-size: 12px; }
-    
-    .search-overlay-title { font-size: 24px; padding: 0 15px; margin-bottom: 25px; }
-    .search-overlay-input { font-size: 16px; padding: 15px 15px 15px 50px; }
-    .search-overlay-tags button { font-size: 12px; padding: 6px 15px; }
+
+    .movie-info {
+        padding: 10px;
+        gap: 3px;
+    }
+
+    .movie-info h3 {
+        font-size: 13px;
+    }
+
+    .movie-info p {
+        font-size: 12px;
+    }
+
+    .search-overlay-title {
+        font-size: 24px;
+        padding: 0 15px;
+        margin-bottom: 25px;
+    }
+
+    .search-overlay-input {
+        font-size: 16px;
+        padding: 15px 15px 15px 50px;
+    }
+
+    .search-overlay-tags button {
+        font-size: 12px;
+        padding: 6px 15px;
+    }
 }
 
 
 @media (max-width: 650px) {
     .hero-desc {
         /* Line height is 1.4, so 2.8em is exactly two lines! */
-        max-height: 2.8em; 
+        max-height: 2.8em;
         line-height: 1.4em;
         overflow-y: auto;
-        padding-right: 8px; /* Leave space for the tiny scrollbar */
+        padding-right: 8px;
+        /* Leave space for the tiny scrollbar */
     }
-    
+
     /* Style the tiny scrollbar to look sleek */
     .hero-desc::-webkit-scrollbar {
         width: 4px;
     }
+
     .hero-desc::-webkit-scrollbar-track {
         background: rgba(255, 255, 255, 0.05);
         border-radius: 4px;
     }
+
     .hero-desc::-webkit-scrollbar-thumb {
         background: #e50914;
         border-radius: 4px;
