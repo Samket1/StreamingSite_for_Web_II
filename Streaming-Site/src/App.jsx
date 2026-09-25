@@ -60,7 +60,10 @@ function App() {
         {/* the Stream Dopamine Text */}
         <div className="nav-logo">
           <span className="logo-icon">🎬</span>
-          <span className="logo-text">Stream<span className="logo-highlight">Dopamine</span></span>
+          <span className="logo-text">
+            <span className="desktop-logo">Stream<span className="logo-highlight">Dopamine</span></span>
+            <span className="mobile-logo">S<span className="logo-highlight">D</span></span>
+          </span>
         </div>
         {/* the search bar */}
         <div className='nav-search'>

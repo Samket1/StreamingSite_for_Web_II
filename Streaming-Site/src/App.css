@@ -745,15 +745,19 @@ body::before {
 }
 
 /* Shrink the search bar until 340px, then turn it into an icon! */
+
+/* Hide mobile logo by default */
+.mobile-logo {
+    display: none;
+}
+
 @media (max-width: 430px) {
-    .desktop-search {
+    /* Switch the text to SD instead of hiding the search bar! */
+    .desktop-logo {
         display: none;
     }
-    .search-icon-btn {
-        display: flex;
-    }
-    /* Hide the logo text on super small screens to save space for the icon if needed */
-    .logo-text {
-        display: none;
+    .mobile-logo {
+        display: inline;
+        font-size: 26px; /* Keep it nice and big */
     }
 }
