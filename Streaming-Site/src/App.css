@@ -6,3 +6,12 @@ body { font-family: 'Inter', system-ui, sans-serif; background-color: #0b0c10; c
 .logo-icon { font-size: 24px; }  
 .logo-text { font-size: 22px; font-weight: 900; letter-spacing: 1px; color: #ffffff; text-transform: uppercase; }  
 .logo-highlight { color: #e50914; }  
+
+.nav-search { flex: 1; display: flex; justify-content: center; }
+.search-input { width: 400px; padding: 10px 20px; border-radius: 30px; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white; font-size: 14px; outline: none; transition: all 0.3s ease; }
+.search-input:focus { background-color: rgba(255, 255, 255, 0.1); border-color: #e50914; width: 450px; }
+.search-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+.nav-profile { display: flex; align-items: center; gap: 20px; }
+.nav-btn { background: none; border: none; color: #a0a0a0; font-size: 14px; cursor: pointer; transition: color 0.2s; }
+.nav-btn:hover { color: white; }
+.avatar { width: 35px; height: 35px; border-radius: 50%; background-color: #e50914; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; }
