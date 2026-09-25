@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
@@ -15,8 +16,13 @@ function MovieCard({ title, rating, posterUrl }) {
   )
 }
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [movies, setMovies] = useState([])
+  useEffect(() => {
+    fetch("https://ghibliapi.vercel.app/films")
+      .then(res => res.json())
+      .then(data => { setMovies(data) })
+  }, []
+  )
   return (
 
     < div className='app-container' >
@@ -71,24 +77,9 @@ function App() {
           <section className='movies-section'>
             <h2 className='section-title'>Trending Now</h2>
             <div className='movies-grid'>
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-              <MovieCard title="The Matrix" rating="6.5" posterUrl="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg" />
-
+              {movies.map((movie) => (
+                <MovieCard key={movie.id} title={movie.title} rating={movie.rt_score} posterUrl={movie.image} />
+              ))}
             </div>
           </section>
         </main>
