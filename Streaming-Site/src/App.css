@@ -304,6 +304,7 @@ body::before {
 }
 
 .movie-card {
+    border: 1px solid transparent;
     position: relative;
     background-color: rgba(26, 28, 35, 0.45);
     border-radius: 12px;
@@ -315,8 +316,10 @@ body::before {
 }
 
 .movie-card:hover {
-    transform: translateY(-10px);
-    box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.1);
+    transform: translateY(-8px);
+    border-color: rgba(229, 9, 20, 0.6);
+    /* Neon crimson-red hover glow */
+    box-shadow: 0 10px 30px rgba(229, 9, 20, 0.45), 0 0 15px rgba(229, 9, 20, 0.3);
 }
 
 .movie-poster {
@@ -700,28 +703,12 @@ body::before {
     animation: overlayFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Give the search bar, title, and tags a bouncy pop-in animation */
+/* Fast, lag-free search display for mobile & desktop */
 .search-overlay-title,
 .search-overlay-input-container,
 .search-overlay-tags {
-    animation: moviePopTopRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
-    opacity: 0;
-    /* Keep them invisible until animation starts */
+    opacity: 1;
 }
-
-/* Stagger the animations to create a cascading 'waterfall' effect */
-.search-overlay-title {
-    animation-delay: 0.05s;
-}
-
-.search-overlay-input-container {
-    animation-delay: 0.1s;
-}
-
-.search-overlay-tags {
-    animation-delay: 0.15s;
-}
-
 
 /* --- SEARCH OVERLAY CLOSE ANIMATIONS --- */
 @keyframes overlayFadeOut {
@@ -789,9 +776,7 @@ body::before {
     padding-bottom: 50px;
     
     /* Make the results cascade in nicely */
-    animation: searchPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
-    animation-delay: 0.2s;
-    opacity: 0;
+    opacity: 1;
 }
 
 .search-overlay.closing .search-results-grid {
