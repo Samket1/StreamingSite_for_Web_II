@@ -936,49 +936,18 @@ body::before {
     }
 }
 
-/* Moving the search icon from navbar right into the search bar input on page opening */
-@keyframes iconTravelIn {
-    0% {
-        opacity: 0.8;
-        /* Start from top-right offset towards the navbar button */
-        transform: translate(25vw, -18vh) scale(1.4);
-        color: #ffffff;
-    }
-    100% {
-        opacity: 1;
-        transform: translate(0, 0) scale(1);
-        color: #a0a0a0;
-    }
-}
-
-/* Flying back to navbar on close */
-@keyframes iconTravelOut {
-    0% {
-        opacity: 1;
-        transform: translate(0, 0) scale(1);
-        color: #a0a0a0;
-    }
-    100% {
-        opacity: 0;
-        transform: translate(25vw, -18vh) scale(1.4);
-        color: #e50914;
-    }
-}
-
+/* Static search icon inside search bar (lag-free, mobile optimized) */
 .search-overlay-icon {
     position: absolute;
     left: 20px;
     top: 50%;
-    margin-top: -10px;
+    transform: translateY(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: iconTravelIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    color: #a0a0a0;
+    pointer-events: none;
     z-index: 10;
-}
-
-.search-overlay.closing .search-overlay-icon {
-    animation: iconTravelOut 0.22s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
 /* Movies pop out from the TOP-RIGHT corner (where search button was clicked!) */
