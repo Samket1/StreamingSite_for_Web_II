@@ -421,11 +421,15 @@ body::before {
     background: rgba(0, 0, 0, 0.4);
     color: white;
     outline: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .search-overlay-input:focus {
     border-color: #e50914;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.65);
+    /* Vibrant crimson-red outer glow when active/focused */
+    box-shadow: 0 0 25px rgba(229, 9, 20, 0.65), 0 0 50px rgba(229, 9, 20, 0.25), inset 0 0 15px rgba(229, 9, 20, 0.2);
+    transform: scale(1.01);
 }
 
 .search-overlay-tags {
@@ -890,50 +894,6 @@ body::before {
     background: rgba(239, 68, 68, 0.9); /* Red on hover to show unwatching */
     border-color: rgba(239, 68, 68, 1);
     box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
-}
-
-/* Search button expanding ring ripple animation - Vivid Red Waves */
-.search-icon-btn {
-    position: relative;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.search-icon-btn.animating::after {
-    content: '';
-    position: fixed; /* Fixed to screen coordinates */
-    top: 40px;      /* Matches navbar button center */
-    right: 120px;
-    width: 40px;
-    height: 40px;
-    margin-top: -20px;
-    margin-right: -20px;
-    border-radius: 50%;
-    /* Blurry glowing RED waves ripples right across the blurred overlay! */
-    border: 3px solid rgba(229, 9, 20, 0.95);
-    box-shadow: 0 0 30px 10px rgba(229, 9, 20, 0.85), inset 0 0 20px 6px rgba(255, 70, 80, 0.8);
-    filter: blur(1.5px);
-    pointer-events: none;
-    z-index: 10001; /* Sits right on top of the blurred search overlay */
-    animation: expandRippleRed 0.45s cubic-bezier(0.15, 0.8, 0.25, 1) forwards;
-}
-
-@keyframes expandRippleRed {
-    0% {
-        transform: scale(1);
-        opacity: 0.95;
-        border-width: 4px;
-        filter: blur(1px);
-    }
-    50% {
-        opacity: 0.8;
-        border-color: rgba(229, 9, 20, 0.9);
-    }
-    100% {
-        transform: scale(45);
-        opacity: 0;
-        border-width: 1px;
-        filter: blur(4px);
-    }
 }
 
 /* Static search icon inside search bar (lag-free, mobile optimized) */

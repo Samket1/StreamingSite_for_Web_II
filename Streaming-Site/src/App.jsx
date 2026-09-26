@@ -1,25 +1,25 @@
 import { useState, useEffect } from 'react'
 // import { useParams, Link, Routes, Route, useNavigate } from 'react-router-dom'
-import { 
+import {
   Bell,
-  Film, 
-  Search, 
-  X, 
-  Play, 
-  Plus, 
-  Star, 
-  Eye, 
-  EyeOff, 
-  Home, 
-  Tv, 
-  Bookmark 
+  Film,
+  Search,
+  X,
+  Play,
+  Plus,
+  Star,
+  Eye,
+  EyeOff,
+  Home,
+  Tv,
+  Bookmark
 } from 'lucide-react'
 import './App.css'
 
 function MovieCard({ id, title, rating, posterUrl, isWatched, onToggleWatch }) {
   return (
     <div className='movie-card'>
-      <button 
+      <button
         className={`card-eye-btn ${isWatched ? 'watched' : ''}`}
         onClick={(e) => {
           e.stopPropagation();
@@ -34,7 +34,7 @@ function MovieCard({ id, title, rating, posterUrl, isWatched, onToggleWatch }) {
       <div className='movie-info'>
         <h3>{title}</h3>
         <p className='rating-container'>
-          <Star size={14} fill="#f5c518" color="#f5c518" /> 
+          <Star size={14} fill="#f5c518" color="#f5c518" />
           <span>{rating}</span>
         </p>
       </div>
@@ -44,7 +44,7 @@ function MovieCard({ id, title, rating, posterUrl, isWatched, onToggleWatch }) {
 
 function App() {
   const [movies, setMovies] = useState([])
-    const [searchOpen, setSearchOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const [search, setSearch] = useState("")
   const [isClosing, setIsClosing] = useState(false)
   const [isSearchAnimating, setIsSearchAnimating] = useState(false)
@@ -57,7 +57,7 @@ function App() {
       setIsSearchAnimating(false)
     }, 450)
   }
-  
+
   // Track watched movie IDs: { [movieId]: true/false }
   const [watchedMovies, setWatchedMovies] = useState({})
 
@@ -69,7 +69,7 @@ function App() {
   }
 
   const filterMovies = movies.filter((movie) => movie.title.toLowerCase().includes(search.toLowerCase()))
-  
+
   const closeSearch = () => {
     setIsClosing(true)
     setTimeout(() => {
@@ -83,7 +83,7 @@ function App() {
       .then(res => res.json())
       .then(data => { setMovies(data) })
   }, [])
-  
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -132,21 +132,21 @@ function App() {
             <X size={22} />
           </button>
           <h1 className='search-overlay-title'>Find your next favorite story</h1>
-          <div className='search-overlay-input-container'> 
+          <div className='search-overlay-input-container'>
             <span className='search-overlay-icon'>
               <Search size={20} />
             </span>
-            <input 
-              type='text' 
-              placeholder='Search movies, series...' 
-              value={search} 
-              onChange={(e) => setSearch(e.target.value)} 
-              className='search-overlay-input' 
+            <input
+              type='text'
+              placeholder='Search movies, series...'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className='search-overlay-input'
             />
           </div>
           <div className='search-results-grid'>
             {filterMovies.map((movie) => (
-              <MovieCard 
+              <MovieCard
                 key={movie.id}
                 id={movie.id}
                 title={movie.title}
@@ -212,12 +212,12 @@ function App() {
             <h2 className='section-title'>Trending Now</h2>
             <div className='movies-grid'>
               {movies.map((movie) => (
-                <MovieCard 
-                  key={movie.id} 
+                <MovieCard
+                  key={movie.id}
                   id={movie.id}
-                  title={movie.title} 
-                  rating={movie.rt_score} 
-                  posterUrl={movie.image} 
+                  title={movie.title}
+                  rating={movie.rt_score}
+                  posterUrl={movie.image}
                   isWatched={!!watchedMovies[movie.id]}
                   onToggleWatch={toggleWatch}
                 />
