@@ -374,6 +374,8 @@ body::before {
     flex-direction: column;
     align-items: center;
     padding-top: 20vh;
+    overflow-y: auto;
+    padding-bottom: 100px;
 }
 
 .close-search-btn {
@@ -768,4 +770,33 @@ body::before {
         font-size: 26px;
         /* Keep it nice and big */
     }
+}
+
+/* --- SEARCH RESULTS GRID --- */
+.search-results-grid {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    
+    padding-bottom: 50px;
+    
+    /* Make the results cascade in nicely */
+    animation: searchPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+    animation-delay: 0.2s;
+    opacity: 0;
+}
+
+.search-overlay.closing .search-results-grid {
+    animation: searchPopOut 0.2s forwards;
+}
+
+.no-results {
+    color: rgba(255,255,255,0.5);
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
 }

@@ -4,6 +4,7 @@ import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
+
 function MovieCard({ title, rating, posterUrl }) {
   return (
     <div className='movie-card'>
@@ -15,45 +16,18 @@ function MovieCard({ title, rating, posterUrl }) {
     </div>
   )
 }
+
 function App() {
   const [movies, setMovies] = useState([])
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-
-  const [isClosing, setIsClosing] = useState(false);
-
-  const closeSearch = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsSearchOpen(false);
-      setIsClosing(false);
-    }, 250); // wait for CSS animation to finish before removing from DOM
-  };
-
-
-  // Listen for the Escape key to close the search overlay
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        closeSearch();
-      }
-    };
-
-    // Attach the event listener to the window
-    window.addEventListener('keydown', handleKeyDown);
-
-    // Cleanup function to prevent memory leaks
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
 
   useEffect(() => {
     fetch("https://ghibliapi.vercel.app/films")
       .then(res => res.json())
       .then(data => { setMovies(data) })
-  }, []
-  )
-  return (
+  }, [])
 
-    < div className='app-container' >
+  return (
+    <div className='app-container'>
       {/*     ------------------------------------------------------------------------------------------------------ */}
       {/* TOP PART */}
       <nav className='navbar'>
@@ -67,8 +41,8 @@ function App() {
         </div>
         {/* the search bar */}
         <div className='nav-search'>
-          <button className="search-icon-btn" onClick={() => setIsSearchOpen(true)}>🔍</button>
-          <input type="text" placeholder="Search movies, series..." className="search-input desktop-search" onClick={() => setIsSearchOpen(true)} />
+          <button className="search-icon-btn">🔍</button>
+          <input type="text" placeholder="Search movies, series..." className="search-input desktop-search" />
         </div>
         {/* profile and Notif */}
         <div className='nav-profile'>
@@ -77,41 +51,21 @@ function App() {
         </div>
       </nav>
 
-      {/* SEARCH OVERLAY */}
-      {isSearchOpen && (
-        <div className={`search-overlay ${isClosing ? 'closing' : ''}`}>
-          <button className="close-search-btn" onClick={closeSearch}>✕</button>
-          <h1 className="search-overlay-title">Find your next favorite story</h1>
-          <div className="search-overlay-input-container">
-            <span className="search-overlay-icon">🔍</span>
-            <input autoFocus type="text" placeholder="Search movies, TV shows & people..." className="search-overlay-input" />
-          </div>
-          <div className="search-overlay-tags">
-            <button>Ghibli</button>
-            <button>Action</button>
-            <button>Fantasy</button>
-            <button>Romance</button>
-          </div>
-        </div>
-      )}
-
       {/* BODY PART */}
       <div className='app-body'>
         {/* left part */}
         {/* ------------------------------------------------------------------------------------------------------ */}
-
         <aside className="sidebar">
           <button className="sidebar-item active"> Home</button>
           <button className="sidebar-item"> Movies</button>
           <button className="sidebar-item"> Series</button>
           <button className="sidebar-item"> Watchlist</button>
         </aside>
+        
         {/* main part */}
         {/* ------------------------------------------------------------------------------------------------------ */}
-        {/* the whole container of the main part */}
         <main className='main-content'>
           {/* the whole container of the hero part*/}
-
           {movies.length > 0 && (
             <div
               className='hero-banner'
@@ -140,9 +94,7 @@ function App() {
         </main>
       </div>
       {/* ------------------------------------------------------------------------------------------------------ */}
-
-
-    </div >
+    </div>
   )
 }
 
