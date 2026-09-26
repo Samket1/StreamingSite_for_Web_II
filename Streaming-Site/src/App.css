@@ -145,7 +145,7 @@ body::before {
     top: 80px;
     height: calc(100vh - 80px);
     overflow-y: auto;
-    width: 140px;
+    width: 200px;
     background-color: rgba(18, 20, 29, 0.3);
     padding: 30px 20px;
     display: flex;
@@ -304,6 +304,7 @@ body::before {
 }
 
 .movie-card {
+    position: relative;
     background-color: rgba(26, 28, 35, 0.45);
     border-radius: 12px;
     overflow: hidden;
@@ -347,7 +348,7 @@ body::before {
 
 /* --- SEARCH OVERLAY (Like the Reference Image) --- */
 .search-icon-btn {
-    display: none;
+    display: flex;
     background: rgba(255, 255, 255, 0.1);
     border: none;
     color: white;
@@ -692,14 +693,14 @@ body::before {
 
 /* Make the dark blurred background fade in smoothly */
 .search-overlay {
-    animation: overlayFadeIn 0.2s ease-out forwards;
+    animation: overlayFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Give the search bar, title, and tags a bouncy pop-in animation */
 .search-overlay-title,
 .search-overlay-input-container,
 .search-overlay-tags {
-    animation: searchPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+    animation: moviePopTopRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
     opacity: 0;
     /* Keep them invisible until animation starts */
 }
@@ -742,7 +743,7 @@ body::before {
 }
 
 .search-overlay.closing {
-    animation: overlayFadeOut 0.25s ease-out forwards;
+    animation: overlayFadeOut 0.22s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
 .search-overlay-input-container.closing,
@@ -799,4 +800,222 @@ body::before {
     text-align: center;
     width: 100%;
     margin-top: 20px;
+}
+
+/* Eye Quick View Button */
+.card-eye-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(11, 12, 16, 0.65);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: all 0.25s ease;
+}
+
+.movie-card:hover .card-eye-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card-eye-btn:hover {
+    background: #e50914;
+    border-color: #e50914;
+    color: #ffffff;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+}
+
+/* Rating Star styling */
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Flex alignment for buttons with icons */
+.btn-primary, .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e50914;
+}
+
+.search-icon-btn, .search-overlay-icon, .close-search-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-icon-btn:hover {
+    background: rgba(229, 9, 20, 0.8);
+    transform: scale(1.05);
+}
+
+/* When watched is active, keep the eye visible and styled green/accented */
+.card-eye-btn.watched {
+    opacity: 1;
+    transform: translateY(0);
+    background: rgba(34, 197, 94, 0.85); /* Modern emerald green */
+    border-color: rgba(34, 197, 94, 1);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
+}
+
+.card-eye-btn.watched:hover {
+    background: rgba(239, 68, 68, 0.9); /* Red on hover to show unwatching */
+    border-color: rgba(239, 68, 68, 1);
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+}
+
+/* Search button expanding ring ripple animation - Vivid Red Waves */
+.search-icon-btn {
+    position: relative;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.search-icon-btn.animating::after {
+    content: '';
+    position: fixed; /* Fixed to screen coordinates */
+    top: 40px;      /* Matches navbar button center */
+    right: 120px;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    margin-right: -20px;
+    border-radius: 50%;
+    /* Blurry glowing RED waves ripples right across the blurred overlay! */
+    border: 3px solid rgba(229, 9, 20, 0.95);
+    box-shadow: 0 0 30px 10px rgba(229, 9, 20, 0.85), inset 0 0 20px 6px rgba(255, 70, 80, 0.8);
+    filter: blur(1.5px);
+    pointer-events: none;
+    z-index: 10001; /* Sits right on top of the blurred search overlay */
+    animation: expandRippleRed 0.45s cubic-bezier(0.15, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes expandRippleRed {
+    0% {
+        transform: scale(1);
+        opacity: 0.95;
+        border-width: 4px;
+        filter: blur(1px);
+    }
+    50% {
+        opacity: 0.8;
+        border-color: rgba(229, 9, 20, 0.9);
+    }
+    100% {
+        transform: scale(45);
+        opacity: 0;
+        border-width: 1px;
+        filter: blur(4px);
+    }
+}
+
+/* Moving the search icon from navbar right into the search bar input on page opening */
+@keyframes iconTravelIn {
+    0% {
+        opacity: 0.8;
+        /* Start from top-right offset towards the navbar button */
+        transform: translate(25vw, -18vh) scale(1.4);
+        color: #ffffff;
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+        color: #a0a0a0;
+    }
+}
+
+/* Flying back to navbar on close */
+@keyframes iconTravelOut {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+        color: #a0a0a0;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(25vw, -18vh) scale(1.4);
+        color: #e50914;
+    }
+}
+
+.search-overlay-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    margin-top: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: iconTravelIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    z-index: 10;
+}
+
+.search-overlay.closing .search-overlay-icon {
+    animation: iconTravelOut 0.22s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* Movies pop out from the TOP-RIGHT corner (where search button was clicked!) */
+@keyframes moviePopTopRight {
+    from {
+        opacity: 0;
+        transform: translate(60px, -45px) scale(0.85);
+    }
+    to {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+/* Circular glass style for notification button */
+.notif-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.notif-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+/* Ensure sidebar icons never get squished and have crisp sizing */
+.sidebar-item svg {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
 }
