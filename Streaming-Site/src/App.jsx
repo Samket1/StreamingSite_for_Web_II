@@ -5,7 +5,7 @@ import './App.css'
 
 function MovieCard({ id, title, rating, posterUrl, isWatched, onToggleWatch }) {
   return (
-    <div className='movie-card'>
+    <div className={`movie-card ${isWatched ? 'card-saved' : ''}`}>
       <button
         className={`card-eye-btn ${isWatched ? 'watched' : ''}`}
         onClick={(e) => {
@@ -155,8 +155,8 @@ function App() {
                 title={movie.title}
                 rating={movie.rt_score}
                 posterUrl={movie.image}
-                isWatched={!!watchedMovies[movie.id]}
-                onToggleWatch={toggleWatch}
+                isWatched={watchlist.some((m) => m.id === movie.id)}
+                onToggleWatch={() => toggleWatchlist(movie)}
               />
             ))}
           </div>
@@ -211,7 +211,6 @@ function App() {
         <main className='main-content'>
           {/* the whole container of the hero part*/}
           {movies.length > 0 && (
-
             <div
               className='hero-banner'
               style={{ backgroundImage: `linear-gradient(to top, #0b0c10 0%, rgba(11, 12, 16, 0.2) 100%), url(${movies[0].movie_banner})` }}

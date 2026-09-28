@@ -19,7 +19,7 @@ body::before {
     right: -20px;
     bottom: -20px;
     /* Oversize slightly to hide blurred edges */
-    background-image: url("./assets/bg.jpg");
+    background-image: linear-gradient(rgba(11, 12, 16, 0.7), rgba(11, 12, 16, 0.75)), url("./assets/bg.jpg");
     background-size: cover;
     background-position: center;
     filter: blur(8px);
@@ -336,6 +336,17 @@ body::before {
 /* .movie-poster:hover {
     box-shadow: 10 20px 50px rgb(51, 255, 0);
 } */
+/* Only trigger when an actual movie card is hovered inside the grid! */
+/* Only trigger when an actual movie card is hovered inside the grid! */
+.movies-grid:has(.movie-card:hover) .movie-card:not(:hover) {
+    filter: saturate(20%) opacity(0.5);
+    transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.movies-grid .movie-card:hover {
+    filter: saturate(100%) opacity(1);
+    transform: translateY(-8px) scale(1.03);
+}
 
 
 .movie-info {
@@ -890,10 +901,10 @@ body::before {
 }
 
 .card-eye-btn.watched:hover {
-    background: rgba(239, 68, 68, 0.9);
-    /* Red on hover to show unwatching */
-    border-color: rgba(239, 68, 68, 1);
-    box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+    background: rgba(34, 197, 94, 1); /* Stays vibrant green on hover */
+    border-color: rgba(34, 197, 94, 1);
+    box-shadow: 0 0 16px rgba(34, 197, 94, 0.8);
+    transform: scale(1.1);
 }
 
 /* Static search icon inside search bar (lag-free, mobile optimized) */
@@ -949,9 +960,11 @@ body::before {
     width: 22px;
     height: 22px;
 }
+
 /* Hero Banner Watchlist Active State - Emerald Green */
 .btn-secondary.in-watchlist {
-    background: rgba(34, 197, 94, 0.85); /* Modern emerald green */
+    background: rgba(34, 197, 94, 0.85);
+    /* Modern emerald green */
     border-color: rgba(34, 197, 94, 1);
     color: #ffffff;
     box-shadow: 0 0 20px rgba(34, 197, 94, 0.45);
@@ -961,4 +974,43 @@ body::before {
     background: rgba(34, 197, 94, 1);
     box-shadow: 0 0 25px rgba(34, 197, 94, 0.7);
     transform: scale(1.03);
+}
+/* Search & Watchlist Modal Cards Desaturation Hover */
+.search-results-grid:has(.movie-card:hover) .movie-card:not(:hover) {
+    filter: saturate(20%) opacity(0.5);
+    transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.search-results-grid .movie-card:hover {
+    filter: saturate(100%) opacity(1);
+    transform: translateY(-8px) scale(1.03);
+}
+
+/* When search or watchlist overlay is open, desaturate the background content (hero banner, trending grid) */
+.app-container:has(.search-overlay) .main-content {
+    filter: saturate(20%) opacity(0.4);
+    transition: filter 0.4s ease, opacity 0.4s ease;
+    pointer-events: none; /* Prevents accidentally clicking items behind the modal */
+}
+
+/* When movie is in watchlist, card gets green styling */
+.movie-card.card-saved {
+    border-color: rgba(34, 197, 94, 0.5);
+}
+
+.movie-card.card-saved .movie-info {
+    background-color: rgba(34, 197, 94, 0.9); /* Green info background (name & rating) */
+    color: #ffffff;
+    transition: background-color 0.3s ease;
+}
+
+/* Hovering a saved card glows green instead of red */
+.movie-card.card-saved:hover {
+    border-color: rgba(34, 197, 94, 0.8);
+    box-shadow: 0 20px 50px rgba(34, 197, 94, 0.45);
+    background-color: rgba(34, 197, 94, 0.95);
+}
+
+.movie-card.card-saved:hover .movie-info {
+    background-color: rgba(34, 197, 94, 1);
 }
