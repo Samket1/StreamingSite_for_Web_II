@@ -994,23 +994,59 @@ body::before {
 }
 
 /* When movie is in watchlist, card gets green styling */
-.movie-card.card-saved {
-    border-color: rgba(34, 197, 94, 0.5);
-}
 
-.movie-card.card-saved .movie-info {
-    background-color: rgba(34, 197, 94, 0.9); /* Green info background (name & rating) */
-    color: #ffffff;
-    transition: background-color 0.3s ease;
-}
+
+
 
 /* Hovering a saved card glows green instead of red */
-.movie-card.card-saved:hover {
+.movie-card.is-in-watchlist:hover {
     border-color: rgba(34, 197, 94, 0.8);
     box-shadow: 0 20px 50px rgba(34, 197, 94, 0.45);
     background-color: rgba(34, 197, 94, 0.95);
 }
 
-.movie-card.card-saved:hover .movie-info {
+.movie-card.is-in-watchlist:hover .movie-info {
     background-color: rgba(34, 197, 94, 1);
+}
+
+
+/* Disable hover effects for mobile and tablets */
+@media (max-width: 1024px) {
+    .movie-card:hover {
+        transform: none !important;
+        border-radius: 12px !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
+        background-color: rgba(26, 28, 35, 0.45) !important;
+        backdrop-filter: blur(20px) !important;
+    }
+    
+    .movies-grid:has(.movie-card:hover) .movie-card:not(:hover),
+    .search-results-grid:has(.movie-card:hover) .movie-card:not(:hover) {
+        filter: none !important;
+        opacity: 1 !important;
+    }
+    
+    .movies-grid .movie-card:hover,
+    .search-results-grid .movie-card:hover {
+        filter: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    /* Make the watchlist button always visible on mobile/tablets */
+    .card-eye-btn {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+    
+    .movie-card.is-in-watchlist:hover {
+        border-color: transparent !important;
+        box-shadow: none !important;
+        background-color: rgba(26, 28, 35, 0.45) !important;
+    }
+    
+    .movie-card.is-in-watchlist:hover .movie-info {
+        background-color: transparent !important;
+    }
 }

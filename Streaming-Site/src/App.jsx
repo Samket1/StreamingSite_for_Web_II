@@ -5,7 +5,7 @@ import './App.css'
 
 function MovieCard({ id, title, rating, posterUrl, isWatched, onToggleWatch }) {
   return (
-    <div className={`movie-card ${isWatched ? 'card-saved' : ''}`}>
+    <div className={`movie-card ${isWatched ? 'is-in-watchlist' : ''}`}>
       <button
         className={`card-eye-btn ${isWatched ? 'watched' : ''}`}
         onClick={(e) => {
