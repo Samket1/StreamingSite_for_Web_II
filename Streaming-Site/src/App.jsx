@@ -1,19 +1,6 @@
 import { useState, useEffect } from 'react'
 // import { useParams, Link, Routes, Route, useNavigate } from 'react-router-dom'
-import {
-  Bell,
-  Film,
-  Search,
-  X,
-  Play,
-  Plus,
-  Star,
-  Eye,
-  EyeOff,
-  Home,
-  Tv,
-  Bookmark
-} from 'lucide-react'
+import { Bell, Film, Search, X, Play, Plus, Eye, EyeOff, Star, Home, Tv, Bookmark } from 'lucide-react'
 import './App.css'
 
 function MovieCard({ id, title, rating, posterUrl, isWatched, onToggleWatch }) {
@@ -23,11 +10,11 @@ function MovieCard({ id, title, rating, posterUrl, isWatched, onToggleWatch }) {
         className={`card-eye-btn ${isWatched ? 'watched' : ''}`}
         onClick={(e) => {
           e.stopPropagation();
-          onToggleWatch(id);
+          onToggleWatch();
         }}
         title={isWatched ? "Mark as unwatched" : "Mark as watched"}
       >
-        {isWatched ? <Eye size={18} /> : <EyeOff size={18} />}
+        <Bookmark size={18} fill={isWatched ? "currentColor" : "none"} />
       </button>
 
       <img src={posterUrl} alt={title} className='movie-poster' />
@@ -48,6 +35,8 @@ function App() {
   const [search, setSearch] = useState("")
   const [isClosing, setIsClosing] = useState(false)
   const [isSearchAnimating, setIsSearchAnimating] = useState(false)
+  const [watchlist, setWatchlist] = useState([]);
+  const [watchlistOpen, setWachlistOpen] = useState(false)
 
   const triggerSearchOpen = () => {
     // Open the search page immediately without waiting!
@@ -56,6 +45,17 @@ function App() {
     setTimeout(() => {
       setIsSearchAnimating(false)
     }, 450)
+  }
+  const toggleWatchlist = (movie) => {
+    setWatchlist((prev) => {
+      const isAlreadyIn = prev.some((m) => m.id === movie.id)
+      if (isAlreadyIn) {
+        return prev.filter((m) => m.id !== movie.id)
+      }
+      else {
+        return [...prev, movie];
+      }
+    })
   }
 
   // Track watched movie IDs: { [movieId]: true/false }
@@ -88,6 +88,8 @@ function App() {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         closeSearch();
+        setWachlistOpen(false)
+
       }
     };
     window.addEventListener('keydown', handleKeyDown)
@@ -95,6 +97,7 @@ function App() {
       window.removeEventListener('keydown', handleKeyDown);
     }
   }, [search])
+  const isSaved = watchlist.some((m) => m.id === movies[0]?.id)
 
   return (
     <div className='app-container'>
@@ -159,7 +162,27 @@ function App() {
           </div>
         </div>
       )}
-
+      {watchlistOpen && (
+        <div className='search-overlay'>
+          <button className='close-search-btn' onClick={() => setWachlistOpen(false)}><X size={22} /></button>
+          <h1 className='search-overlay-title'>Your Watchlist has {watchlist.length} movies/shows  </h1>
+          {watchlist.length === 0 ? (
+            <p className='no-results'>Your watchlist is empty. Add some movies/series!</p>
+          ) : (
+            <div className='search-results-grid'>
+              {watchlist.map((movie) => (
+                <MovieCard
+                  key={movie.id}
+                  id={movie.id}
+                  title={movie.title}
+                  rating={movie.rt_score}
+                  posterUrl={movie.image}
+                  isWatched={true}
+                  onToggleWatch={() => toggleWatchlist(movie)} />
+              ))}</div>
+          )}
+        </div>
+      )}
       {/* BODY PART */}
       <div className='app-body'>
         {/* left part */}
@@ -177,9 +200,9 @@ function App() {
             <Tv size={22} />
             <span>Series</span>
           </button>
-          <button className="sidebar-item">
+          <button className="sidebar-item" onClick={() => setWachlistOpen(true)}>
             <Bookmark size={22} />
-            <span>Watchlist</span>
+            <span>Watchlist({watchlist.length})</span>
           </button>
         </aside>
 
@@ -188,10 +211,12 @@ function App() {
         <main className='main-content'>
           {/* the whole container of the hero part*/}
           {movies.length > 0 && (
+
             <div
               className='hero-banner'
               style={{ backgroundImage: `linear-gradient(to top, #0b0c10 0%, rgba(11, 12, 16, 0.2) 100%), url(${movies[0].movie_banner})` }}
             >
+
               <div className='hero-content'>
                 <span className='hero-badge'>Featured</span>
                 <h1 className="hero-title">{movies[0].title}</h1>
@@ -200,7 +225,8 @@ function App() {
                   <button className='btn-primary'>
                     <Play size={18} fill="currentColor" /> Play Now
                   </button>
-                  <button className="btn-secondary">
+                  <button className={`btn-secondary ${isSaved ? 'in-watchlist' : ''}`}
+                    onClick={() => toggleWatchlist(movies[0])}>
                     <Plus size={18} /> Watchlist
                   </button>
                 </div>
@@ -218,16 +244,16 @@ function App() {
                   title={movie.title}
                   rating={movie.rt_score}
                   posterUrl={movie.image}
-                  isWatched={!!watchedMovies[movie.id]}
-                  onToggleWatch={toggleWatch}
+                  isWatched={watchlist.some((m) => m.id === movie.id)}
+                  onToggleWatch={() => toggleWatchlist(movie)}
                 />
               ))}
             </div>
           </section>
         </main>
-      </div>
+      </div >
       {/* ------------------------------------------------------------------------------------------------------ */}
-    </div>
+    </div >
   )
 }
 
