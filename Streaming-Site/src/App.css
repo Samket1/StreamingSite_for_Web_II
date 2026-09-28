@@ -949,3 +949,16 @@ body::before {
     width: 22px;
     height: 22px;
 }
+/* Hero Banner Watchlist Active State - Emerald Green */
+.btn-secondary.in-watchlist {
+    background: rgba(34, 197, 94, 0.85); /* Modern emerald green */
+    border-color: rgba(34, 197, 94, 1);
+    color: #ffffff;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.45);
+}
+
+.btn-secondary.in-watchlist:hover {
+    background: rgba(34, 197, 94, 1);
+    box-shadow: 0 0 25px rgba(34, 197, 94, 0.7);
+    transform: scale(1.03);
+}

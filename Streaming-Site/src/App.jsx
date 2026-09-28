@@ -227,7 +227,8 @@ function App() {
                   </button>
                   <button className={`btn-secondary ${isSaved ? 'in-watchlist' : ''}`}
                     onClick={() => toggleWatchlist(movies[0])}>
-                    <Plus size={18} /> Watchlist
+                    <Bookmark size={18} fill={isSaved ? "currentColor" : "none"} />
+                    <span>{isSaved ? " In Watchlist" : " Watchlist"}</span>
                   </button>
                 </div>
               </div>
