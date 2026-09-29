@@ -59,7 +59,7 @@ function App() {
           posterUrl: movie.image,
           rating: movie.rt_score
         }
-        fetch("http://localhost:5000/api/watchlist", {
+        fetch("https://streamingsite-for-web-ii.onrender.com", {
           method: "POST",
           headers: {
             "Content-Type":
@@ -113,7 +113,7 @@ function App() {
   }, [search])
   const isSaved = watchlist.some((m) => m.id === movies[0]?.id)
   useEffect(() => {
-    fetch("http://localhost:5000/api/watchlist")
+    fetch("https://streamingsite-for-web-ii.onrender.com")
       .then(res => res.json())
       .then(data => {
         setWatchlist(data);
