@@ -38,8 +38,11 @@ function App() {
   const [isSearchAnimating, setIsSearchAnimating] = useState(false)
   const [watchlist, setWatchlist] = useState([]);
   const [watchlistOpen, setWachlistOpen] = useState(false)
-  const [selectedMovie, setSelectedMovie] = useState(null);
-
+  const [selectedMovie, setSelectedMovie] = useState(null)
+  const [user, setUser] = useState(null)
+  const [authMode, setAuthMode] = useState("login")
+  const [authForm, setAuthForm] = useState({ username: "", password: "", newPassword: "" });
+  const [authMessage, setAuthMessage] = useState("");
 
   const triggerSearchOpen = () => {
     // Open the search page immediately without waiting!
@@ -49,7 +52,7 @@ function App() {
       setIsSearchAnimating(false)
     }, 450)
   }
-    const toggleWatchlist = (movie) => {
+  const toggleWatchlist = (movie) => {
     const clickedId = movie.id || movie.movieId;
     const isAlreadyIn = watchlist.some((m) => (m.id || m.movieId) === clickedId);
 
@@ -124,13 +127,13 @@ function App() {
         setWatchlist(data);
       });
   }, [])
-    if (selectedMovie) {
+  if (selectedMovie) {
     const movieId = selectedMovie.id || selectedMovie.movieId;
     const isSaved = watchlist.some((m) => (m.id || m.movieId) === movieId);
     return (
-      <MovieDetails 
-        movie={selectedMovie} 
-        onBack={() => setSelectedMovie(null)} 
+      <MovieDetails
+        movie={selectedMovie}
+        onBack={() => setSelectedMovie(null)}
         isWatched={isSaved}
         onToggleWatch={() => toggleWatchlist(selectedMovie)}
       />

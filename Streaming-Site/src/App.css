@@ -590,9 +590,9 @@ body::before {
     }
 
     /* Fix movie grid for phones */
-    .movies-grid {
-        grid-template-columns: repeat(2, 1fr);
-        /* Force 2 columns on phone */
+    .movies-grid, .search-results-grid {
+        grid-template-columns: repeat(3, 1fr);
+        /* Force 3 columns on phone */
         gap: 15px;
     }
 
