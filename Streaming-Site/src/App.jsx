@@ -19,6 +19,7 @@ function App() {
 
   const [user, setUser] = useState(localStorage.getItem("savedUser") || null)
   const [authModalOpen, setAuthModalOpen] = useState(false)
+  const [authModalMode, setAuthModalMode] = useState("login")
 
   const triggerSearchOpen = () => {
     setSearchOpen(true)
@@ -137,14 +138,17 @@ function App() {
           </button>
 
           {user ? (
-            <button className='login-btn logout' onClick={() => { setUser(null); localStorage.removeItem("savedUser"); setWatchlist([]); }}>Logout ({user})</button>
+            <div style={{display: 'flex', gap: '10px'}}>
+              <button className='login-btn logout' onClick={() => { setAuthModalMode("update"); setAuthModalOpen(true); }}>Change Password</button>
+              <button className='login-btn logout' onClick={() => { setUser(null); localStorage.removeItem("savedUser"); setWatchlist([]); }}>Logout ({user})</button>
+            </div>
           ) : (
-            <button className='login-btn' onClick={() => setAuthModalOpen(true)}>Sign In</button>
+            <button className='login-btn' onClick={() => { setAuthModalMode("login"); setAuthModalOpen(true); }}>Sign In</button>
           )}
         </div>
       </nav>
       {authModalOpen && (
-        <SignupLogin setAuthModalOpen={setAuthModalOpen} setUser={setUser} />
+        <SignupLogin setAuthModalOpen={setAuthModalOpen} setUser={setUser} user={user} initialMode={authModalMode} />
       )}
 
       {searchOpen && (
@@ -241,6 +245,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
