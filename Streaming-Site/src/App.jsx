@@ -47,10 +47,17 @@ function App() {
     }, 450)
   }
   const toggleWatchlist = (movie) => {
+    const clickedId = movie.id || movie.movieId;
+
     setWatchlist((prev) => {
-      const isAlreadyIn = prev.some((m) => m.id === movie.id)
+      const isAlreadyIn = prev.some((m) => (m.id || m.movieId) === clickedId);
+
       if (isAlreadyIn) {
-        return prev.filter((m) => m.id !== movie.id)
+        fetch(`https://streamingsite-for-web-ii.onrender.com/api/watchlist/${clickedId}`, {
+          method: "DELETE"
+        });
+
+        return prev.filter((m) => (m.id || m.movieId) !== clickedId);
       }
       else {
         const dbMovie = {
@@ -58,19 +65,21 @@ function App() {
           title: movie.title,
           posterUrl: movie.image,
           rating: movie.rt_score
-        }
+        };
+
         fetch("https://streamingsite-for-web-ii.onrender.com/api/watchlist", {
           method: "POST",
           headers: {
-            "Content-Type":
-              "application/json"
+            "Content-Type": "application/json"
           },
           body: JSON.stringify(dbMovie)
         });
-        return [...prev, movie];
+
+        return [...prev, dbMovie];
       }
-    })
-  }
+    });
+  };
+
 
   // Track watched movie IDs: { [movieId]: true/false }
   const [watchedMovies, setWatchedMovies] = useState({})
@@ -111,7 +120,7 @@ function App() {
       window.removeEventListener('keydown', handleKeyDown);
     }
   }, [search])
-  const isSaved = watchlist.some((m) => m.id === movies[0]?.id)
+  const isSaved = watchlist.some((m) => (m.id || m.movieId) === (movies[0]?.id || movies[0]?.movieId))
   useEffect(() => {
     fetch("https://streamingsite-for-web-ii.onrender.com/api/watchlist")
       .then(res => res.json())
