@@ -45,6 +45,8 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
                 }
             } else {
                 setAuthMessage(data.error);
+                setPassword("");
+                setNewPassword("");
             }
         } catch (err) {
             setAuthMessage("Server is offline!");
@@ -61,7 +63,7 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
                 <h2 className='auth-title'>
                     {authMode === "login" ? "Sign In" : authMode === "register" ? "Sign Up" : "Update Password"}
                 </h2>
-                
+
                 <form className='auth-form' onSubmit={handleAuthSubmit}>
                     {authMode !== "update" && (
                         <input
@@ -72,7 +74,7 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     )}
-                    
+
                     <input
                         type="password"
                         placeholder={authMode === "update" ? "Old Password" : "Password"}
@@ -95,13 +97,13 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
                         {authMode === "login" ? "Sign In" : authMode === "register" ? "Sign Up" : "Update Password"}
                     </button>
                 </form>
-                
+
                 {authMessage && (
                     <p className='auth-message' style={{ color: authMessage.includes("offline") || authMessage.includes("error") || authMessage.includes("already") || authMessage.includes("Wrong") ? "#e50914" : "#4ade80" }}>
                         {authMessage}
                     </p>
                 )}
-                
+
                 {authMode !== "update" && (
                     <div className='auth-switch'>
                         {authMode === "login" ? (
@@ -115,3 +117,4 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
         </div>
     );
 }
+

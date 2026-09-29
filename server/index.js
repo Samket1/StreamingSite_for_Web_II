@@ -94,12 +94,12 @@ app.post('/api/auth/login', async (req, res) => {
         const { username, password } = req.body;
         const user = await User.findOne({ username });
         if (!user) {
-            return res.status(400).json({ error: "User not found!" });
+            return res.status(400).json({ error: "Incorrect username or password!" });
         }
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
         if (!isPasswordCorrect) {
-            return res.status(400).json({ error: "Wrong password!" });
+            return res.status(400).json({ error: "Incorrect username or password!" });
         }
         res.status(200).json({ message: "Login successful!", username: user.username });
     }
@@ -118,7 +118,7 @@ app.put('/api/auth/update-password', async (req, res) => {
 
         const user = await User.findOne({ username });
         if (!user) {
-            return res.status(404).json({ error: "User not found!" });
+            return res.status(404).json({ error: "Incorrect username or password!" });
         }
 
         const isMatch = await bcrypt.compare(oldPassword, user.password);
@@ -133,5 +133,6 @@ app.put('/api/auth/update-password', async (req, res) => {
         res.status(500).json({ error: "Server error updating password." });
     }
 });
+
 
 
