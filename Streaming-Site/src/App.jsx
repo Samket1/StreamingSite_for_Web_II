@@ -78,17 +78,6 @@ function App() {
     }
   };
 
-
-  // Track watched movie IDs: { [movieId]: true/false }
-  const [watchedMovies, setWatchedMovies] = useState({})
-
-  const toggleWatch = (movieId) => {
-    setWatchedMovies((prev) => ({
-      ...prev,
-      [movieId]: !prev[movieId]
-    }))
-  }
-
   const filterMovies = movies.filter((movie) => movie.title.toLowerCase().includes(search.toLowerCase()))
 
   const closeSearch = () => {
