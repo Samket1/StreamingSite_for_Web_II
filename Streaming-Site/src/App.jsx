@@ -6,6 +6,7 @@ import SearchOverlay from './SearchOverlay';
 import WatchlistOverlay from './WatchlistOverlay';
 import './App.css'
 import SignupLogin from './Signup_Login';
+import Player from './Player';
 
 const TMDB_API_KEY = "969b4d22cf39488a0c72c57da978591a";
 
@@ -19,11 +20,13 @@ function App() {
   
   const [searchOpen, setSearchOpen] = useState(false)
   const [search, setSearch] = useState("")
+  const [searchResults, setSearchResults] = useState([])
   const [isClosing, setIsClosing] = useState(false)
   const [isSearchAnimating, setIsSearchAnimating] = useState(false)
   const [watchlist, setWatchlist] = useState([]);
   const [watchlistOpen, setWatchlistOpen] = useState(false)
   const [selectedMovie, setSelectedMovie] = useState(null)
+  const [playingMovie, setPlayingMovie] = useState(null)
   
   const [user, setUser] = useState(localStorage.getItem("savedUser") || null)
   const [authModalOpen, setAuthModalOpen] = useState(false)
@@ -67,13 +70,13 @@ function App() {
     }
   };
 
-  const filterMovies = movies.filter((movie) => (movie.title || movie.name || "").toLowerCase().includes(search.toLowerCase()))
-
   const closeSearch = () => {
     setIsClosing(true)
     setTimeout(() => {
       setSearchOpen(false)
       setIsClosing(false)
+      setSearch("")
+      setSearchResults([])
     }, 220)
   }
 
@@ -81,6 +84,20 @@ function App() {
     const title = movie.title || movie.name;
     window.open(`https://www.youtube.com/results?search_query=${title} official trailer`, '_blank');
   };
+
+  // Live TMDB Search
+  useEffect(() => {
+    if (search.length > 2) {
+      fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${search}`)
+        .then(res => res.json())
+        .then(data => {
+            // Filter out actors, only keep movies and tv shows
+            setSearchResults((data.results || []).filter(item => item.media_type !== 'person'))
+        })
+    } else {
+      setSearchResults([])
+    }
+  }, [search])
 
   useEffect(() => {
     const type = activeTab === "Series" ? "tv" : "movie";
@@ -120,7 +137,7 @@ function App() {
     if (user) {
       fetch(`http://localhost:5000/api/watchlist/${user}`)
         .then(res => res.json())
-        .then(data => setWatchlist(data));
+        .then(data => setWatchlist(Array.isArray(data) ? data : []));
     } else {
       setWatchlist([]);
     }
@@ -171,6 +188,7 @@ function App() {
 
   return (
     <div className='app-container'>
+      {playingMovie && <Player movie={playingMovie} onBack={() => setPlayingMovie(null)} />}
       <nav className='navbar'>
         <div className="nav-logo">
           <span className="logo-icon"><Film size={26} /></span>
@@ -205,7 +223,7 @@ function App() {
           setSearch={setSearch}
           isClosing={isClosing}
           closeSearch={closeSearch}
-          filterMovies={filterMovies}
+          filterMovies={searchResults}
           watchlist={watchlist}
           toggleWatchlist={toggleWatchlist}
           setSelectedMovie={setSelectedMovie}
@@ -309,3 +327,5 @@ function App() {
 }
 
 export default App;
+
+

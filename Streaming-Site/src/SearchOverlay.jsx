@@ -32,14 +32,14 @@ export default function SearchOverlay({
       <div className='search-results-grid'>
         {filterMovies.map((movie) => {
           const movieId = movie.id || movie.movieId;
-          const isInWatchlist = watchlist.some((m) => (m.id || m.movieId) === movieId);
+          const isInWatchlist = watchlist.some((m) => (m.id || m.movieId) == movieId);
           return (
             <MovieCard
               key={movieId}
               id={movieId}
-              title={movie.title}
-              rating={movie.rt_score || movie.rating}
-              posterUrl={movie.image || movie.posterUrl}
+              title={movie.title || movie.name}
+              rating={movie.vote_average ? (movie.vote_average * 10).toFixed(0) : movie.rating}
+              posterUrl={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : movie.posterUrl}
               isWatched={isInWatchlist}
               onToggleWatch={() => toggleWatchlist(movie)}
               onCardClick={() => setSelectedMovie(movie)}
