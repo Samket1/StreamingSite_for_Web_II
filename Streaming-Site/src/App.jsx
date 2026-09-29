@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Bell, Film, Search, Play, Home, Tv, Bookmark } from 'lucide-react'
+import { Bell, Film, Search, Play, Home, Tv, Bookmark, ChevronDown, ChevronUp } from 'lucide-react'
 import MovieDetails from './MovieDetails';
 import MovieCard from './MovieCard';
 import SearchOverlay from './SearchOverlay';
@@ -7,8 +7,16 @@ import WatchlistOverlay from './WatchlistOverlay';
 import './App.css'
 import SignupLogin from './Signup_Login';
 
+const TMDB_API_KEY = "969b4d22cf39488a0c72c57da978591a";
+
 function App() {
+  const [activeTab, setActiveTab] = useState("Home")
   const [movies, setMovies] = useState([])
+  const [topRated, setTopRated] = useState([])
+  const [action, setAction] = useState([])
+  const [comedy, setComedy] = useState([])
+  const [horror, setHorror] = useState([])
+  
   const [searchOpen, setSearchOpen] = useState(false)
   const [search, setSearch] = useState("")
   const [isClosing, setIsClosing] = useState(false)
@@ -16,17 +24,17 @@ function App() {
   const [watchlist, setWatchlist] = useState([]);
   const [watchlistOpen, setWatchlistOpen] = useState(false)
   const [selectedMovie, setSelectedMovie] = useState(null)
-
+  
   const [user, setUser] = useState(localStorage.getItem("savedUser") || null)
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authModalMode, setAuthModalMode] = useState("login")
 
+  const [showMoreTrending, setShowMoreTrending] = useState(false)
+
   const triggerSearchOpen = () => {
     setSearchOpen(true)
     setIsSearchAnimating(true)
-    setTimeout(() => {
-      setIsSearchAnimating(false)
-    }, 450)
+    setTimeout(() => setIsSearchAnimating(false), 450)
   }
 
   const toggleWatchlist = (movie) => {
@@ -36,20 +44,18 @@ function App() {
       return;
     }
     const clickedId = movie.id || movie.movieId;
-    const isAlreadyIn = watchlist.some((m) => (m.id || m.movieId) === clickedId);
+    const isAlreadyIn = watchlist.some((m) => (m.id || m.movieId) == clickedId);
 
     if (isAlreadyIn) {
-      fetch(`http://localhost:5000/api/watchlist/${user}/${clickedId}`, {
-        method: "DELETE"
-      });
-      setWatchlist((prev) => prev.filter((m) => (m.id || m.movieId) !== clickedId));
+      fetch(`http://localhost:5000/api/watchlist/${user}/${clickedId}`, { method: "DELETE" });
+      setWatchlist((prev) => prev.filter((m) => (m.id || m.movieId) != clickedId));
     } else {
       const dbMovie = {
         username: user,
-        movieId: movie.id || movie.movieId,
-        title: movie.title,
-        posterUrl: movie.image || movie.posterUrl,
-        rating: movie.rt_score || movie.rating
+        movieId: (movie.id || movie.movieId).toString(),
+        title: movie.title || movie.name,
+        posterUrl: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : movie.posterUrl,
+        rating: movie.vote_average ? (movie.vote_average * 10).toFixed(0).toString() : movie.rating
       };
 
       fetch("http://localhost:5000/api/watchlist", {
@@ -61,7 +67,7 @@ function App() {
     }
   };
 
-  const filterMovies = movies.filter((movie) => movie.title.toLowerCase().includes(search.toLowerCase()))
+  const filterMovies = movies.filter((movie) => (movie.title || movie.name || "").toLowerCase().includes(search.toLowerCase()))
 
   const closeSearch = () => {
     setIsClosing(true)
@@ -71,11 +77,32 @@ function App() {
     }, 220)
   }
 
+  const playTrailer = (movie) => {
+    const title = movie.title || movie.name;
+    window.open(`https://www.youtube.com/results?search_query=${title} official trailer`, '_blank');
+  };
+
   useEffect(() => {
-    fetch("https://ghibliapi.vercel.app/films")
-      .then(res => res.json())
-      .then(data => { setMovies(data) })
-  }, [])
+    const type = activeTab === "Series" ? "tv" : "movie";
+
+    fetch(`https://api.themoviedb.org/3/trending/${type}/day?api_key=${TMDB_API_KEY}`)
+      .then(res => res.json()).then(data => setMovies(data.results || []))
+
+    fetch(`https://api.themoviedb.org/3/${type}/top_rated?api_key=${TMDB_API_KEY}`)
+      .then(res => res.json()).then(data => setTopRated(data.results || []))
+
+    const actionId = type === "tv" ? "10759" : "28";
+    fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=${actionId}`)
+      .then(res => res.json()).then(data => setAction(data.results || []))
+
+    fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=35`)
+      .then(res => res.json()).then(data => setComedy(data.results || []))
+
+    const horrorId = type === "tv" ? "9648" : "27"; // Mystery for TV, Horror for Movie
+    fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=${horrorId}`)
+      .then(res => res.json()).then(data => setHorror(data.results || []))
+
+  }, [activeTab])
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -86,18 +113,14 @@ function App() {
       }
     };
     window.addEventListener('keydown', handleKeyDown)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [search])
 
   useEffect(() => {
     if (user) {
       fetch(`http://localhost:5000/api/watchlist/${user}`)
         .then(res => res.json())
-        .then(data => {
-          setWatchlist(data);
-        });
+        .then(data => setWatchlist(data));
     } else {
       setWatchlist([]);
     }
@@ -105,24 +128,52 @@ function App() {
 
   if (selectedMovie) {
     const movieId = selectedMovie.id || selectedMovie.movieId;
-    const isSaved = watchlist.some((m) => (m.id || m.movieId) === movieId);
+    const isSaved = watchlist.some((m) => (m.id || m.movieId) == movieId);
     return (
       <MovieDetails
         movie={selectedMovie}
         onBack={() => setSelectedMovie(null)}
         isWatched={isSaved}
         onToggleWatch={() => toggleWatchlist(selectedMovie)}
+        onPlay={() => playTrailer(selectedMovie)}
       />
     );
   }
+
+  const trendingToShow = showMoreTrending ? movies : movies.slice(0, 10);
+
+  const renderSection = (title, items, limit) => {
+    if (items.length === 0) return null;
+    return (
+      <section className='movies-section' style={{ marginTop: '40px' }}>
+        <h2 className='section-title'>{title}</h2>
+        <div className='movies-grid'>
+          {items.slice(0, limit).map((movie) => {
+            const movieId = movie.id || movie.movieId;
+            const isInWatchlist = watchlist.some((m) => (m.id || m.movieId) == movieId);
+            return (
+              <MovieCard
+                key={movieId}
+                id={movieId}
+                title={movie.title || movie.name}
+                rating={movie.vote_average ? (movie.vote_average * 10).toFixed(0) : movie.rating}
+                posterUrl={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : movie.posterUrl}
+                isWatched={isInWatchlist}
+                onToggleWatch={() => toggleWatchlist(movie)}
+                onCardClick={() => setSelectedMovie(movie)}
+              />
+            );
+          })}
+        </div>
+      </section>
+    );
+  };
 
   return (
     <div className='app-container'>
       <nav className='navbar'>
         <div className="nav-logo">
-          <span className="logo-icon">
-            <Film size={26} />
-          </span>
+          <span className="logo-icon"><Film size={26} /></span>
           <span className="logo-text">
             <span className="desktop-logo">Stream<span className="logo-highlight">Dopamine</span></span>
             <span className="mobile-logo">S<span className="logo-highlight">D</span></span>
@@ -135,7 +186,7 @@ function App() {
           </button>
 
           {user ? (
-            <div style={{display: 'flex', gap: '10px'}}>
+            <div style={{ display: 'flex', gap: '10px' }}>
               <button className='login-btn logout' onClick={() => { setAuthModalMode("update"); setAuthModalOpen(true); }}>Change Password</button>
               <button className='login-btn logout' onClick={() => { setUser(null); localStorage.removeItem("savedUser"); setWatchlist([]); }}>Logout ({user})</button>
             </div>
@@ -172,21 +223,17 @@ function App() {
 
       <div className='app-body'>
         <aside className="sidebar">
-          <button className="sidebar-item active">
-            <Home size={22} />
-            <span>Home</span>
+          <button className={`sidebar-item ${activeTab === 'Home' ? 'active' : ''}`} onClick={() => setActiveTab('Home')}>
+            <Home size={22} /><span>Home</span>
           </button>
-          <button className="sidebar-item">
-            <Film size={22} />
-            <span>Movies</span>
+          <button className={`sidebar-item ${activeTab === 'Movies' ? 'active' : ''}`} onClick={() => setActiveTab('Movies')}>
+            <Film size={22} /><span>Movies</span>
           </button>
-          <button className="sidebar-item">
-            <Tv size={22} />
-            <span>Series</span>
+          <button className={`sidebar-item ${activeTab === 'Series' ? 'active' : ''}`} onClick={() => setActiveTab('Series')}>
+            <Tv size={22} /><span>Series</span>
           </button>
           <button className="sidebar-item" onClick={() => setWatchlistOpen(true)}>
-            <Bookmark size={22} />
-            <span>Watchlist({watchlist.length})</span>
+            <Bookmark size={22} /><span>Watchlist({watchlist.length})</span>
           </button>
         </aside>
 
@@ -194,20 +241,20 @@ function App() {
           {movies.length > 0 && (
             <div
               className='hero-banner'
-              style={{ backgroundImage: `linear-gradient(to top, #0b0c10 0%, rgba(11, 12, 16, 0.2) 100%), url(${movies[0].movie_banner})` }}
+              style={{ backgroundImage: `linear-gradient(to top, #0b0c10 0%, rgba(11, 12, 16, 0.2) 100%), url(https://image.tmdb.org/t/p/original${movies[0].backdrop_path || movies[0].poster_path})` }}
             >
               <div className='hero-content'>
                 <span className='hero-badge'>Featured</span>
-                <h1 className="hero-title">{movies[0].title}</h1>
-                <p className="hero-desc">{movies[0].description}</p>
+                <h1 className="hero-title">{movies[0].title || movies[0].name}</h1>
+                <p className="hero-desc">{movies[0].overview}</p>
                 <div className='hero-buttons'>
-                  <button className='btn-primary'>
+                  <button className='btn-primary' onClick={() => playTrailer(movies[0])}>
                     <Play size={18} fill="currentColor" /> Play Now
                   </button>
-                  <button className={`btn-secondary ${watchlist.some((m) => (m.id || m.movieId) === (movies[0]?.id || movies[0]?.movieId)) ? 'in-watchlist' : ''}`}
+                  <button className={`btn-secondary ${watchlist.some((m) => (m.id || m.movieId) == (movies[0]?.id || movies[0]?.movieId)) ? 'in-watchlist' : ''}`}
                     onClick={() => toggleWatchlist(movies[0])}>
-                    <Bookmark size={18} fill={watchlist.some((m) => (m.id || m.movieId) === (movies[0]?.id || movies[0]?.movieId)) ? "currentColor" : "none"} />
-                    <span>{watchlist.some((m) => (m.id || m.movieId) === (movies[0]?.id || movies[0]?.movieId)) ? " In Watchlist" : " Watchlist"}</span>
+                    <Bookmark size={18} fill={watchlist.some((m) => (m.id || m.movieId) == (movies[0]?.id || movies[0]?.movieId)) ? "currentColor" : "none"} />
+                    <span>{watchlist.some((m) => (m.id || m.movieId) == (movies[0]?.id || movies[0]?.movieId)) ? " In Watchlist" : " Watchlist"}</span>
                   </button>
                 </div>
               </div>
@@ -215,18 +262,21 @@ function App() {
           )}
 
           <section className='movies-section'>
-            <h2 className='section-title'>Trending Now</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 className='section-title' style={{ marginBottom: 0 }}>Trending Now</h2>
+            </div>
+            
             <div className='movies-grid'>
-              {movies.map((movie) => {
+              {trendingToShow.map((movie) => {
                 const movieId = movie.id || movie.movieId;
-                const isInWatchlist = watchlist.some((m) => (m.id || m.movieId) === movieId);
+                const isInWatchlist = watchlist.some((m) => (m.id || m.movieId) == movieId);
                 return (
                   <MovieCard
                     key={movieId}
                     id={movieId}
-                    title={movie.title}
-                    rating={movie.rt_score || movie.rating}
-                    posterUrl={movie.image || movie.posterUrl}
+                    title={movie.title || movie.name}
+                    rating={movie.vote_average ? (movie.vote_average * 10).toFixed(0) : movie.rating}
+                    posterUrl={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : movie.posterUrl}
                     isWatched={isInWatchlist}
                     onToggleWatch={() => toggleWatchlist(movie)}
                     onCardClick={() => setSelectedMovie(movie)}
@@ -234,7 +284,24 @@ function App() {
                 );
               })}
             </div>
+            
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                <button 
+                    className="btn-secondary" 
+                    style={{ padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}
+                    onClick={() => setShowMoreTrending(!showMoreTrending)}
+                >
+                    {showMoreTrending ? "Show Less" : "See More"} 
+                    {showMoreTrending ? <ChevronUp size={18}/> : <ChevronDown size={18}/>}
+                </button>
+            </div>
           </section>
+
+          {renderSection("Critically Acclaimed", topRated, 5)}
+          {renderSection("Epic Action", action, 5)}
+          {renderSection("Laugh Out Loud", comedy, 5)}
+          {renderSection(activeTab === "Series" ? "Unsolved Mysteries" : "Terrifying Horror", horror, 5)}
+
         </main>
       </div>
     </div>
@@ -242,9 +309,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-

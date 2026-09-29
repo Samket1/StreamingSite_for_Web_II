@@ -1,21 +1,43 @@
-import React from 'react';
-import { ArrowLeft, Play, Bookmark, Star, ThumbsUp, ThumbsDown, Clapperboard } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft, Play, Bookmark, Star, Clapperboard, X, Server } from 'lucide-react';
 import './MovieDetails.css';
 
 export default function MovieDetails({ movie, onBack, isWatched, onToggleWatch }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [videoSource, setVideoSource] = useState('coca-cola');
+
   if (!movie) return null;
+
+  const bgImage = movie.backdrop_path
+    ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+    : (movie.movie_banner || movie.posterUrl || movie.image);
+
+  const movieId = movie.id || movie.movieId;
+
+  // This is the dynamic URL builder architecture your friend used.
+  // I have replaced the real domains with soda brands.
+  let embedUrl = "";
+
+  if (videoSource === 'coca-cola') {
+    // coca-cola represents the first API in your friend's switch statement
+    embedUrl = `https://vidsrc.to/embed/movie/${movieId}`;
+  } else if (videoSource === 'pepsi') {
+    // pepsi represents the second API in your friend's switch statement
+    embedUrl = `https://moviesapi.club/movie/${movieId}`;
+  } else if (videoSource === 'sprite') {
+    // sprite represents the third API
+    embedUrl = `https://www.2embed.cc/embed/${movieId}`;
+  }
 
   return (
     <div className="movie-details-container">
-      {/* Background Banner */}
-      <div 
-        className="movie-details-banner" 
-        style={{ backgroundImage: `url(${movie.movie_banner || movie.image})` }}
+      <div
+        className="movie-details-banner"
+        style={{ backgroundImage: `url(${bgImage})` }}
       >
         <div className="banner-gradient"></div>
       </div>
 
-      {/* Top Bar */}
       <div className="movie-details-topbar">
         <button className="back-btn" onClick={onBack}>
           <ArrowLeft size={28} />
@@ -25,16 +47,15 @@ export default function MovieDetails({ movie, onBack, isWatched, onToggleWatch }
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="movie-details-content">
-        <h1 className="movie-details-title">{movie.title}</h1>
-        
+        <h1 className="movie-details-title">{movie.title || movie.name}</h1>
+
         <div className="movie-details-genres">
-          Animation &bull; Adventure &bull; Family
+          HD &bull; StreamDopamine
         </div>
 
         <div className="movie-details-actions">
-          <button className="btn-primary">
+          <button className="btn-primary" onClick={() => setIsPlaying(true)}>
             <Play size={20} fill="currentColor" /> Play Now
           </button>
           <button className={`btn-secondary ${isWatched ? 'in-watchlist' : ''}`} onClick={onToggleWatch}>
@@ -44,38 +65,72 @@ export default function MovieDetails({ movie, onBack, isWatched, onToggleWatch }
         </div>
 
         <div className="movie-details-meta">
-          <span>{movie.release_date}</span>
-          <span>{movie.running_time}m</span>
+          <span>{movie.release_date || movie.first_air_date || "N/A"}</span>
           <span className="rating-score">
-            <Star size={16} fill="#f5c518" color="#f5c518" /> {movie.rt_score || movie.rating}
+            <Star size={16} fill="#f5c518" color="#f5c518" /> {movie.vote_average ? (movie.vote_average * 10).toFixed(0) : (movie.rt_score || movie.rating)}% Match
           </span>
         </div>
 
-        <div className="movie-details-director">
-          <span className="label">Director:</span> {movie.director}
-        </div>
-
         <div className="movie-details-description">
-          {movie.description}
-          {/* A simple fade out or read more could go here if text is too long, but we'll show it whole for now */}
-        </div>
-
-        {/* Bottom Info Card */}
-        <div className="movie-details-bottom-sheet">
-          <div className="sheet-row">
-            <span className="sheet-label">Runtime</span>
-            <span className="sheet-value">{movie.running_time}m &bull; Ends {new Date(Date.now() + movie.running_time * 60000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-          </div>
-          <div className="sheet-row">
-            <span className="sheet-label">Language</span>
-            <span className="sheet-value">EN, JP</span>
-          </div>
-          <div className="sheet-row">
-            <span className="sheet-label">Budget</span>
-            <span className="sheet-value">N/A</span>
-          </div>
+          {movie.overview || movie.description}
         </div>
       </div>
+
+      {/* IN-APP VIDEO PLAYER MODAL */}
+      {isPlaying && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: '#000', zIndex: 9999, display: 'flex', flexDirection: 'column'
+        }}>
+          {/* Player Controls Bar */}
+          <div style={{
+            display: 'flex', justifyContent: 'space-between', padding: '15px 20px',
+            backgroundColor: '#111', alignItems: 'center'
+          }}>
+
+            {/* Server Selection Dropdown */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Server size={20} color="#00d4aa" />
+              <select
+                value={videoSource}
+                onChange={(e) => setVideoSource(e.target.value)}
+                style={{
+                  backgroundColor: '#222', color: 'white', padding: '8px',
+                  borderRadius: '5px', border: '1px solid #333', outline: 'none'
+                }}
+              >
+                <option value="coca-cola">Server 1 (Coca-Cola)</option>
+                <option value="pepsi">Server 2 (Pepsi)</option>
+                <option value="sprite">Server 3 (Sprite)</option>
+              </select>
+            </div>
+
+            {/* Close Button */}
+            <button
+              onClick={() => setIsPlaying(false)}
+              style={{
+                background: 'transparent', border: 'none', color: 'white',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px'
+              }}
+            >
+              <X size={24} /> Close
+            </button>
+          </div>
+
+          {/* IFRAME VIDEO PLAYER */}
+          <div style={{ flex: 1, backgroundColor: '#000' }}>
+            <iframe
+              src={embedUrl}
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              allowFullScreen
+              allow="autoplay; fullscreen; picture-in-picture"
+            ></iframe>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
