@@ -613,9 +613,9 @@ body::before {
     }
 
     .search-overlay-title {
-        font-size: 24px;
+        font-size: 20px;
         padding: 0 15px;
-        margin-bottom: 25px;
+        margin-bottom: 15px;
     }
 
     .search-overlay-input {

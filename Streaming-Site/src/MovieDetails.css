@@ -217,3 +217,61 @@
   color: #fff;
   font-weight: 600;
 }
+
+/* --- MOBILE RESPONSIVENESS (Samsung A53, etc.) --- */
+@media (max-width: 768px) {
+  .movie-details-banner {
+    height: 35vh;
+    min-height: 250px;
+  }
+  
+  .movie-details-content {
+    margin-top: -60px;
+    padding: 0 15px 30px 15px;
+  }
+
+  .movie-details-title {
+    font-size: 2rem;
+    margin-bottom: 5px;
+  }
+  
+  .movie-details-genres {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+  }
+
+  .movie-details-actions {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .movie-details-actions button {
+    font-size: 0.95rem;
+    padding: 10px 20px;
+  }
+
+  .movie-details-meta {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+
+  .movie-details-description {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .movie-details-bottom-sheet {
+    padding: 15px;
+    gap: 10px;
+  }
+  
+  .sheet-row {
+    font-size: 0.85rem;
+  }
+}
