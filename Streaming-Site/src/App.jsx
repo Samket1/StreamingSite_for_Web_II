@@ -38,7 +38,7 @@ function App() {
     const isAlreadyIn = watchlist.some((m) => (m.id || m.movieId) === clickedId);
 
     if (isAlreadyIn) {
-      fetch("http://localhost:5000/api/watchlist/${user}/${clickedId}", {
+      fetch(`http://localhost:5000/api/watchlist/${user}/${clickedId}`, {
         method: "DELETE"
       });
       setWatchlist((prev) => prev.filter((m) => (m.id || m.movieId) !== clickedId));
@@ -92,7 +92,7 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      fetch("http://localhost:5000/api/watchlist/${user}")
+      fetch(`http://localhost:5000/api/watchlist/${user}`)
         .then(res => res.json())
         .then(data => {
           setWatchlist(data);
@@ -241,6 +241,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
