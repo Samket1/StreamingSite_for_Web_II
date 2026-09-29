@@ -133,9 +133,6 @@ function App() {
           <button className={`search-icon-btn ${isSearchAnimating ? "animating" : ""}`} onClick={triggerSearchOpen} title="Search">
             <Search size={20} />
           </button>
-          <button className='nav-btn notif-btn' title="Notifications">
-            <Bell size={20} />
-          </button>
 
           {user ? (
             <div style={{display: 'flex', gap: '10px'}}>
@@ -245,6 +242,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
