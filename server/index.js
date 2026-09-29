@@ -111,24 +111,27 @@ app.post('/api/auth/login', async (req, res) => {
 app.listen(PORT, () => {
     console.log("Server is running on port " + PORT);
 });
-
+//update password
 app.put('/api/auth/update-password', async (req, res) => {
     try {
-        const { username, oldPassowrd, newPassword } = req.body;
+        const { username, oldPassword, newPassword } = req.body;
+
         const user = await User.findOne({ username });
-        //prlly incorrect username that doesnt exist in the DB
-        const isMatch = await bcrypt.compare(oldPassowrd, user.password)
         if (!user) {
             return res.status(404).json({ error: "User not found!" });
         }
-        //if password mismatch happens 
+
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
         if (!isMatch) {
             return res.status(400).json({ error: "Wrong old password!" });
         }
-        user.password = await bcrypt.hash(newPassword, 10)
+
+        user.password = await bcrypt.hash(newPassword, 10);
         await user.save();
         res.status(200).json({ message: "Password updated successfully!" });
     } catch (error) {
         res.status(500).json({ error: "Server error updating password." });
     }
-})
+});
+
+
