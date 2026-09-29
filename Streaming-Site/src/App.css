@@ -1052,3 +1052,142 @@ body::before {
         background-color: transparent !important;
     }
 }
+/* --- AUTH MODAL (NETFLIX STYLE) --- */
+.login-btn {
+  background-color: #e50914;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.login-btn:hover { background-color: #f40612; }
+.login-btn.logout { background-color: transparent; border: 1px solid white; }
+.login-btn.logout:hover { background-color: rgba(255,255,255,0.1); }
+
+.auth-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(11, 12, 16, 0.95); /* Solid for performance */
+  backdrop-filter: blur(10px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: overlayFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.auth-modal {
+  background-color: #0b0c10;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 40px 50px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  animation: searchPopIn 0.3s ease forwards;
+}
+
+.auth-close {
+  position: absolute;
+  top: 15px; right: 15px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.auth-title {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: white;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.auth-form input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #e50914;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.auth-submit-btn {
+  padding: 15px;
+  font-size: 1.1rem;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.auth-message {
+  color: #4ade80;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.auth-switch {
+  margin-top: 25px;
+  color: #8c8c8c;
+  font-size: 0.95rem;
+}
+
+.auth-switch span {
+  color: white;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.auth-switch span:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .auth-modal {
+    padding: 30px 20px;
+    height: 100%;
+    border-radius: 0;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* PERFORMANCE OPTIMIZATIONS FOR MOBILE (Fixing the lag) */
+@media (max-width: 768px) {
+  body::before {
+    filter: none; /* Disable heavy background blur */
+    background-color: #0b0c10;
+    background-image: none; /* Remove heavy bg image on mobile */
+  }
+  .navbar, .sidebar, .search-overlay, .auth-overlay, .card-eye-btn {
+    backdrop-filter: none !important; /* Disable all glassmorphism on mobile */
+  }
+  .sidebar {
+    background-color: #0b0c10 !important; /* Solid color */
+  }
+  .navbar {
+    background-color: rgba(11, 12, 16, 0.95) !important;
+  }
+  .search-overlay, .auth-overlay {
+    background-color: rgba(11, 12, 16, 0.98) !important;
+  }
+  .movie-card {
+    box-shadow: none !important; /* Remove shadows */
+  }
+}
