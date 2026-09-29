@@ -33,10 +33,9 @@ const Movie = mongoose.model("Movie", movieSchema);
 const PORT = 5000;
 
 app.get('/', (request, response) => {
-    response.send("Welcome to StreamDopamine! The backend is officially ALIVE! dYs?");
+    response.send("Welcome to StreamDopamine! The backend is officially ALIVE!");
 });
 
-// GET a SPECIFIC user's watchlist
 app.get('/api/watchlist/:username', async (req, res) => {
     try {
         const userWatchlist = await Movie.find({ username: req.params.username });
@@ -46,11 +45,10 @@ app.get('/api/watchlist/:username', async (req, res) => {
     }
 });
 
-// POST (Save a movie attached to a username)
 app.post('/api/watchlist', async (req, res) => {
     try {
-        const movieData = req.body; 
-        const newMovie = new Movie(movieData); 
+        const movieData = req.body;
+        const newMovie = new Movie(movieData);
         await newMovie.save();
         res.status(201).json({ message: "Movie saved perfectly!" });
     } catch (error) {
@@ -58,12 +56,11 @@ app.post('/api/watchlist', async (req, res) => {
     }
 });
 
-// DELETE a specific movie for a specific user
 app.delete('/api/watchlist/:username/:movieId', async (req, res) => {
     try {
-        await Movie.findOneAndDelete({ 
-            username: req.params.username, 
-            movieId: req.params.movieId 
+        await Movie.findOneAndDelete({
+            username: req.params.username,
+            movieId: req.params.movieId
         });
         res.status(200).json({ message: "Movie Deleted" });
     } catch (error) {
@@ -71,7 +68,6 @@ app.delete('/api/watchlist/:username/:movieId', async (req, res) => {
     }
 });
 
-//SIGNUP
 app.post('/api/auth/register', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -93,7 +89,6 @@ app.post('/api/auth/register', async (req, res) => {
     }
 });
 
-//LOGIN
 app.post('/api/auth/login', async (req, res) => {
     try {
         const { username, password } = req.body;
