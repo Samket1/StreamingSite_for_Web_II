@@ -15,10 +15,11 @@ import {
   Bookmark
 } from 'lucide-react'
 import './App.css'
+import MovieDetails from './MovieDetails'
 
-function MovieCard({ id, title, rating, posterUrl, isWatched, onToggleWatch }) {
+function MovieCard({ id, title, rating, posterUrl, isWatched, onToggleWatch, onClick }) {
   return (
-    <div className='movie-card'>
+    <div className='movie-card' onClick={onClick}>
       <button
         className={`card-eye-btn ${isWatched ? 'watched' : ''}`}
         onClick={(e) => {
@@ -44,6 +45,7 @@ function MovieCard({ id, title, rating, posterUrl, isWatched, onToggleWatch }) {
 
 function App() {
   const [movies, setMovies] = useState([])
+  const [selectedMovie, setSelectedMovie] = useState(null)
   const [searchOpen, setSearchOpen] = useState(false)
   const [search, setSearch] = useState("")
   const [isClosing, setIsClosing] = useState(false)
@@ -154,6 +156,7 @@ function App() {
                 posterUrl={movie.image}
                 isWatched={!!watchedMovies[movie.id]}
                 onToggleWatch={toggleWatch}
+                onClick={() => setSelectedMovie(movie)}
               />
             ))}
           </div>
@@ -220,6 +223,7 @@ function App() {
                   posterUrl={movie.image}
                   isWatched={!!watchedMovies[movie.id]}
                   onToggleWatch={toggleWatch}
+                  onClick={() => setSelectedMovie(movie)}
                 />
               ))}
             </div>
@@ -227,6 +231,8 @@ function App() {
         </main>
       </div>
       {/* ------------------------------------------------------------------------------------------------------ */}
+      
+      <MovieDetails movie={selectedMovie} onBack={() => setSelectedMovie(null)} />
     </div>
   )
 }
