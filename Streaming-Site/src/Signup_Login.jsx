@@ -25,6 +25,7 @@ export default function SignupLogin({ setAuthModalOpen, setUser }) {
             if (response.ok) {
                 if (authMode === "login") {
                     setUser(data.username);
+                    localStorage.setItem("savedUser", data.username);
                     setAuthModalOpen(false);
                 } else {
                     setAuthMessage("Success! Now please sign in.");
@@ -84,3 +85,4 @@ export default function SignupLogin({ setAuthModalOpen, setUser }) {
         </div>
     );
 }
+

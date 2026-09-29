@@ -17,7 +17,7 @@ function App() {
   const [watchlistOpen, setWatchlistOpen] = useState(false)
   const [selectedMovie, setSelectedMovie] = useState(null)
 
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(localStorage.getItem("savedUser") || null)
   const [authModalOpen, setAuthModalOpen] = useState(false)
 
   const triggerSearchOpen = () => {
@@ -38,19 +38,20 @@ function App() {
     const isAlreadyIn = watchlist.some((m) => (m.id || m.movieId) === clickedId);
 
     if (isAlreadyIn) {
-      fetch(`https://streamingsite-for-web-ii.onrender.com/api/watchlist/${clickedId}`, {
+      fetch("http://localhost:5000/api/watchlist/${user}/${clickedId}", {
         method: "DELETE"
       });
       setWatchlist((prev) => prev.filter((m) => (m.id || m.movieId) !== clickedId));
     } else {
       const dbMovie = {
+        username: user,
         movieId: movie.id || movie.movieId,
         title: movie.title,
         posterUrl: movie.image || movie.posterUrl,
         rating: movie.rt_score || movie.rating
       };
 
-      fetch("https://streamingsite-for-web-ii.onrender.com/api/watchlist", {
+      fetch("http://localhost:5000/api/watchlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dbMovie)
@@ -90,12 +91,16 @@ function App() {
   }, [search])
 
   useEffect(() => {
-    fetch("https://streamingsite-for-web-ii.onrender.com/api/watchlist")
-      .then(res => res.json())
-      .then(data => {
-        setWatchlist(data);
-      });
-  }, [])
+    if (user) {
+      fetch("http://localhost:5000/api/watchlist/${user}")
+        .then(res => res.json())
+        .then(data => {
+          setWatchlist(data);
+        });
+    } else {
+      setWatchlist([]);
+    }
+  }, [user])
 
   if (selectedMovie) {
     const movieId = selectedMovie.id || selectedMovie.movieId;
@@ -132,7 +137,7 @@ function App() {
           </button>
 
           {user ? (
-            <button className='login-btn logout' onClick={() => setUser(null)}>Logout ({user})</button>
+            <button className='login-btn logout' onClick={() => { setUser(null); localStorage.removeItem("savedUser"); setWatchlist([]); }}>Logout ({user})</button>
           ) : (
             <button className='login-btn' onClick={() => setAuthModalOpen(true)}>Sign In</button>
           )}
@@ -236,5 +241,6 @@ function App() {
 }
 
 export default App;
+
 
 
