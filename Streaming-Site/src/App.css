@@ -588,7 +588,8 @@ body::before {
     }
 
     /* Fix movie grid for phones */
-    .movies-grid, .search-results-grid {
+    .movies-grid,
+    .search-results-grid {
         grid-template-columns: repeat(3, 1fr);
         /* Force 3 columns on phone */
         gap: 15px;
@@ -899,7 +900,8 @@ body::before {
 }
 
 .card-eye-btn.watched:hover {
-    background: rgba(34, 197, 94, 1); /* Stays vibrant green on hover */
+    background: rgba(34, 197, 94, 1);
+    /* Stays vibrant green on hover */
     border-color: rgba(34, 197, 94, 1);
     box-shadow: 0 0 16px rgba(34, 197, 94, 0.8);
     transform: scale(1.1);
@@ -973,6 +975,7 @@ body::before {
     box-shadow: 0 0 25px rgba(34, 197, 94, 0.7);
     transform: scale(1.03);
 }
+
 /* Search & Watchlist Modal Cards Desaturation Hover */
 .search-results-grid:has(.movie-card:hover) .movie-card:not(:hover) {
     filter: saturate(20%) opacity(0.5);
@@ -988,7 +991,8 @@ body::before {
 .app-container:has(.search-overlay) .main-content {
     filter: saturate(20%) opacity(0.4);
     transition: filter 0.4s ease, opacity 0.4s ease;
-    pointer-events: none; /* Prevents accidentally clicking items behind the modal */
+    pointer-events: none;
+    /* Prevents accidentally clicking items behind the modal */
 }
 
 /* When movie is in watchlist, card gets green styling */
@@ -1018,32 +1022,32 @@ body::before {
         background-color: rgba(26, 28, 35, 0.45) !important;
         backdrop-filter: blur(20px) !important;
     }
-    
+
     .movies-grid:has(.movie-card:hover) .movie-card:not(:hover),
     .search-results-grid:has(.movie-card:hover) .movie-card:not(:hover) {
         filter: none !important;
         opacity: 1 !important;
     }
-    
+
     .movies-grid .movie-card:hover,
     .search-results-grid .movie-card:hover {
         filter: none !important;
         opacity: 1 !important;
         transform: none !important;
     }
-    
+
     /* Make the watchlist button always visible on mobile/tablets */
     .card-eye-btn {
         opacity: 1 !important;
         transform: translateY(0) !important;
     }
-    
+
     .movie-card.is-in-watchlist:hover {
         border-color: transparent !important;
         box-shadow: none !important;
         background-color: rgba(26, 28, 35, 0.45) !important;
     }
-    
+
     .movie-card.is-in-watchlist:hover .movie-info {
         background-color: transparent !important;
     }
