@@ -1156,17 +1156,7 @@ body::before {
   text-decoration: underline;
 }
 
-@media (max-width: 768px) {
-  .auth-modal {
-    padding: 30px 20px;
-    height: 100%;
-    border-radius: 0;
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-}
+@media (max-width: 768px) { .auth-modal { padding: 30px 20px; border-radius: 12px; width: 90%; } }
 
 /* PERFORMANCE OPTIMIZATIONS FOR MOBILE (Fixing the lag) */
 @media (max-width: 768px) {
@@ -1191,3 +1181,4 @@ body::before {
     box-shadow: none !important; /* Remove shadows */
   }
 }
+

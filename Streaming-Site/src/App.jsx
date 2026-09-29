@@ -5,6 +5,7 @@ import MovieCard from './MovieCard';
 import SearchOverlay from './SearchOverlay';
 import WatchlistOverlay from './WatchlistOverlay';
 import './App.css'
+import SignupLogin from './Signup_Login';
 
 function App() {
   const [movies, setMovies] = useState([])
@@ -15,8 +16,7 @@ function App() {
   const [watchlist, setWatchlist] = useState([]);
   const [watchlistOpen, setWatchlistOpen] = useState(false)
   const [selectedMovie, setSelectedMovie] = useState(null)
-  
-  // Auth states
+
   const [user, setUser] = useState(null)
   const [authModalOpen, setAuthModalOpen] = useState(false)
 
@@ -29,6 +29,11 @@ function App() {
   }
 
   const toggleWatchlist = (movie) => {
+    if (!user) {
+      alert("Login to add to watchlist!");
+      setAuthModalOpen(true);
+      return;
+    }
     const clickedId = movie.id || movie.movieId;
     const isAlreadyIn = watchlist.some((m) => (m.id || m.movieId) === clickedId);
 
@@ -125,7 +130,7 @@ function App() {
           <button className='nav-btn notif-btn' title="Notifications">
             <Bell size={20} />
           </button>
-          
+
           {user ? (
             <button className='login-btn logout' onClick={() => setUser(null)}>Logout ({user})</button>
           ) : (
@@ -133,9 +138,12 @@ function App() {
           )}
         </div>
       </nav>
+      {authModalOpen && (
+        <SignupLogin setAuthModalOpen={setAuthModalOpen} setUser={setUser} />
+      )}
 
-      {/* Auth Modal goes here (To be built by you!) */}{searchOpen && (
-        <SearchOverlay 
+      {searchOpen && (
+        <SearchOverlay
           search={search}
           setSearch={setSearch}
           isClosing={isClosing}
@@ -146,16 +154,16 @@ function App() {
           setSelectedMovie={setSelectedMovie}
         />
       )}
-      
+
       {watchlistOpen && (
-        <WatchlistOverlay 
+        <WatchlistOverlay
           watchlist={watchlist}
           setWatchlistOpen={setWatchlistOpen}
           toggleWatchlist={toggleWatchlist}
           setSelectedMovie={setSelectedMovie}
         />
       )}
-      
+
       <div className='app-body'>
         <aside className="sidebar">
           <button className="sidebar-item active">
@@ -228,4 +236,5 @@ function App() {
 }
 
 export default App;
+
 
