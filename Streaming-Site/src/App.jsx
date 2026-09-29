@@ -53,6 +53,20 @@ function App() {
         return prev.filter((m) => m.id !== movie.id)
       }
       else {
+        const dbMovie = {
+          movieId: movie.id,
+          title: movie.title,
+          posterUrl: movie.image,
+          rating: movie.rt_score
+        }
+        fetch("http://localhost:5000/api/watchlist", {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify(dbMovie)
+        });
         return [...prev, movie];
       }
     })
@@ -98,7 +112,13 @@ function App() {
     }
   }, [search])
   const isSaved = watchlist.some((m) => m.id === movies[0]?.id)
-
+  useEffect(() => {
+    fetch("http://localhost:5000/api/watchlist")
+      .then(res => res.json())
+      .then(data => {
+        setWatchlist(data);
+      });
+  }, [])
   return (
     <div className='app-container'>
       {/*     ------------------------------------------------------------------------------------------------------ */}

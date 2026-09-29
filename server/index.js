@@ -20,9 +20,10 @@ const PORT = 5000;
 
 app.get('/', (request, response) => {
     response.send("Welcome to StreamDopamine! The backend is officially ALIVE! 🚀")
+
 })
 
-app.post('/api/watchlist'), async (req, res) => {
+app.post('/api/watchlist', async (req, res) => {
     try {
         const movieData = req.body;
         const newMovie = new Movie(movieData)
@@ -33,7 +34,17 @@ app.post('/api/watchlist'), async (req, res) => {
         res.status(500).json({ error: "Something went wrong saving the movie." })
     }
 
-}
+})
+app.get('/api/watchlist', async (req, res) => {
+    try {
+        const allMovies = await Movie.find();
+        res.status(200).json(allMovies)
+    }
+    catch (error) {
+        res.status(500).json({ error: "Could not fetch" });
+
+    }
+})
 app.listen(PORT, () => {
     console.log("Server is running on port " + PORT);
 })   
