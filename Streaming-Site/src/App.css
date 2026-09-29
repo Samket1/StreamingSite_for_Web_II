@@ -145,9 +145,9 @@ body::before {
     top: 80px;
     height: calc(100vh - 80px);
     overflow-y: auto;
-    width: 200px;
+    width: 170px;
     background-color: rgba(18, 20, 29, 0.3);
-    padding: 30px 20px;
+    padding: 20px 15px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -169,16 +169,16 @@ body::before {
     background: transparent;
     border: none;
     color: #a0a0a0;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
-    padding: 12px 15px;
+    padding: 10px 12px;
     border-radius: 12px;
     text-align: left;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 }
 
 .sidebar-item:hover {
@@ -299,7 +299,7 @@ body::before {
 
 .movies-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 30px;
 }
 
@@ -791,7 +791,7 @@ body::before {
     width: 100%;
     max-width: 1000px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 20px;
 
     padding-bottom: 50px;
@@ -957,8 +957,8 @@ body::before {
 /* Ensure sidebar icons never get squished and have crisp sizing */
 .sidebar-item svg {
     flex-shrink: 0;
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
 }
 
 /* Hero Banner Watchlist Active State - Emerald Green */

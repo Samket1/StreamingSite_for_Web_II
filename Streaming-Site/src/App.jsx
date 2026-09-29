@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 // import { useParams, Link, Routes, Route, useNavigate } from 'react-router-dom'
 import { Bell, Film, Search, X, Play, Plus, Eye, EyeOff, Star, Home, Tv, Bookmark } from 'lucide-react'
+import MovieDetails from './MovieDetails';
 import './App.css'
 
-function MovieCard({ id, title, rating, posterUrl, isWatched, onToggleWatch }) {
+function MovieCard({ id, title, rating, posterUrl, isWatched, onToggleWatch, onCardClick }) {
   return (
-    <div className={`movie-card ${isWatched ? 'is-in-watchlist' : ''}`}>
+    <div className={`movie-card ${isWatched ? 'is-in-watchlist' : ''}`} onClick={onCardClick} style={{ cursor: "pointer" }}>
       <button
         className={`card-eye-btn ${isWatched ? 'watched' : ''}`}
         onClick={(e) => {
@@ -37,6 +38,8 @@ function App() {
   const [isSearchAnimating, setIsSearchAnimating] = useState(false)
   const [watchlist, setWatchlist] = useState([]);
   const [watchlistOpen, setWachlistOpen] = useState(false)
+  const [selectedMovie, setSelectedMovie] = useState(null);
+
 
   const triggerSearchOpen = () => {
     // Open the search page immediately without waiting!
@@ -46,38 +49,30 @@ function App() {
       setIsSearchAnimating(false)
     }, 450)
   }
-  const toggleWatchlist = (movie) => {
+    const toggleWatchlist = (movie) => {
     const clickedId = movie.id || movie.movieId;
+    const isAlreadyIn = watchlist.some((m) => (m.id || m.movieId) === clickedId);
 
-    setWatchlist((prev) => {
-      const isAlreadyIn = prev.some((m) => (m.id || m.movieId) === clickedId);
+    if (isAlreadyIn) {
+      fetch(`https://streamingsite-for-web-ii.onrender.com/api/watchlist/${clickedId}`, {
+        method: "DELETE"
+      });
+      setWatchlist((prev) => prev.filter((m) => (m.id || m.movieId) !== clickedId));
+    } else {
+      const dbMovie = {
+        movieId: movie.id || movie.movieId,
+        title: movie.title,
+        posterUrl: movie.image || movie.posterUrl,
+        rating: movie.rt_score || movie.rating
+      };
 
-      if (isAlreadyIn) {
-        fetch(`https://streamingsite-for-web-ii.onrender.com/api/watchlist/${clickedId}`, {
-          method: "DELETE"
-        });
-
-        return prev.filter((m) => (m.id || m.movieId) !== clickedId);
-      }
-      else {
-        const dbMovie = {
-          movieId: movie.id || movie.movieId,
-          title: movie.title,
-          posterUrl: movie.image || movie.posterUrl,
-          rating: movie.rt_score || movie.rating
-        };
-
-        fetch("https://streamingsite-for-web-ii.onrender.com/api/watchlist", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(dbMovie)
-        });
-
-        return [...prev, dbMovie];
-      }
-    });
+      fetch("https://streamingsite-for-web-ii.onrender.com/api/watchlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dbMovie)
+      });
+      setWatchlist((prev) => [...prev, dbMovie]);
+    }
   };
 
 
@@ -111,7 +106,8 @@ function App() {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         closeSearch();
-        setWachlistOpen(false)
+        setWachlistOpen(false);
+        setSelectedMovie(null)
 
       }
     };
@@ -128,6 +124,18 @@ function App() {
         setWatchlist(data);
       });
   }, [])
+    if (selectedMovie) {
+    const movieId = selectedMovie.id || selectedMovie.movieId;
+    const isSaved = watchlist.some((m) => (m.id || m.movieId) === movieId);
+    return (
+      <MovieDetails 
+        movie={selectedMovie} 
+        onBack={() => setSelectedMovie(null)} 
+        isWatched={isSaved}
+        onToggleWatch={() => toggleWatchlist(selectedMovie)}
+      />
+    );
+  }
   return (
     <div className='app-container'>
       {/*     ------------------------------------------------------------------------------------------------------ */}
@@ -189,6 +197,7 @@ function App() {
                   posterUrl={movie.image || movie.posterUrl}
                   isWatched={isInWatchlist}
                   onToggleWatch={() => toggleWatchlist(movie)}
+                  onCardClick={() => setSelectedMovie(movie)}
                 />
               );
             })}
@@ -214,6 +223,7 @@ function App() {
                     posterUrl={movie.posterUrl || movie.image}
                     isWatched={true}
                     onToggleWatch={() => toggleWatchlist(movie)}
+                    onCardClick={() => setSelectedMovie(movie)}
                   />
                 );
               })}</div>
@@ -286,6 +296,7 @@ function App() {
                     posterUrl={movie.image || movie.posterUrl}
                     isWatched={isInWatchlist}
                     onToggleWatch={() => toggleWatchlist(movie)}
+                    onCardClick={() => setSelectedMovie(movie)}
                   />
                 );
               })}
