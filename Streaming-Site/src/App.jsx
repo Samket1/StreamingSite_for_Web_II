@@ -6,7 +6,6 @@ import SearchOverlay from './SearchOverlay';
 import WatchlistOverlay from './WatchlistOverlay';
 import './App.css'
 import SignupLogin from './Signup_Login';
-import Player from './Player';
 
 const TMDB_API_KEY = "969b4d22cf39488a0c72c57da978591a";
 
@@ -25,8 +24,8 @@ function App() {
   const [isSearchAnimating, setIsSearchAnimating] = useState(false)
   const [watchlist, setWatchlist] = useState([]);
   const [watchlistOpen, setWatchlistOpen] = useState(false)
+  
   const [selectedMovie, setSelectedMovie] = useState(null)
-  const [playingMovie, setPlayingMovie] = useState(null)
   
   const [user, setUser] = useState(localStorage.getItem("savedUser") || null)
   const [authModalOpen, setAuthModalOpen] = useState(false)
@@ -80,18 +79,11 @@ function App() {
     }, 220)
   }
 
-  const playTrailer = (movie) => {
-    const title = movie.title || movie.name;
-    window.open(`https://www.youtube.com/results?search_query=${title} official trailer`, '_blank');
-  };
-
-  // Live TMDB Search
   useEffect(() => {
     if (search.length > 2) {
       fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${search}`)
         .then(res => res.json())
         .then(data => {
-            // Filter out actors, only keep movies and tv shows
             setSearchResults((data.results || []).filter(item => item.media_type !== 'person'))
         })
     } else {
@@ -115,7 +107,7 @@ function App() {
     fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=35`)
       .then(res => res.json()).then(data => setComedy(data.results || []))
 
-    const horrorId = type === "tv" ? "9648" : "27"; // Mystery for TV, Horror for Movie
+    const horrorId = type === "tv" ? "9648" : "27"; 
     fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=${horrorId}`)
       .then(res => res.json()).then(data => setHorror(data.results || []))
 
@@ -152,7 +144,6 @@ function App() {
         onBack={() => setSelectedMovie(null)}
         isWatched={isSaved}
         onToggleWatch={() => toggleWatchlist(selectedMovie)}
-        onPlay={() => playTrailer(selectedMovie)}
       />
     );
   }
@@ -188,7 +179,6 @@ function App() {
 
   return (
     <div className='app-container'>
-      {playingMovie && <Player movie={playingMovie} onBack={() => setPlayingMovie(null)} />}
       <nav className='navbar'>
         <div className="nav-logo">
           <span className="logo-icon"><Film size={26} /></span>
@@ -213,6 +203,7 @@ function App() {
           )}
         </div>
       </nav>
+      
       {authModalOpen && (
         <SignupLogin setAuthModalOpen={setAuthModalOpen} setUser={setUser} user={user} initialMode={authModalMode} />
       )}
@@ -266,7 +257,7 @@ function App() {
                 <h1 className="hero-title">{movies[0].title || movies[0].name}</h1>
                 <p className="hero-desc">{movies[0].overview}</p>
                 <div className='hero-buttons'>
-                  <button className='btn-primary' onClick={() => playTrailer(movies[0])}>
+                  <button className='btn-primary' onClick={() => setSelectedMovie(movies[0])}>
                     <Play size={18} fill="currentColor" /> Play Now
                   </button>
                   <button className={`btn-secondary ${watchlist.some((m) => (m.id || m.movieId) == (movies[0]?.id || movies[0]?.movieId)) ? 'in-watchlist' : ''}`}
@@ -327,5 +318,3 @@ function App() {
 }
 
 export default App;
-
-
