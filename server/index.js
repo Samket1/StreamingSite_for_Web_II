@@ -22,6 +22,18 @@ app.get('/', (request, response) => {
     response.send("Welcome to StreamDopamine! The backend is officially ALIVE! 🚀")
 })
 
+app.post('/api/watchlist'), async (req, res) => {
+    try {
+        const movieData = req.body;
+        const newMovie = new Movie(movieData)
+        await newMovie.save();
+        res.status(201).json({ message: "Movie saved perfectly!" })
+    }
+    catch (error) {
+        res.status(500).json({ error: "Something went wrong saving the movie." })
+    }
+
+}
 app.listen(PORT, () => {
     console.log("Server is running on port " + PORT);
 })   
