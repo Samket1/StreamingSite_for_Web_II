@@ -4,7 +4,6 @@ import MovieDetails from './MovieDetails';
 import MovieCard from './MovieCard';
 import SearchOverlay from './SearchOverlay';
 import WatchlistOverlay from './WatchlistOverlay';
-import SignupLogin from './SignupLogin';
 import './App.css'
 
 function App() {
@@ -135,11 +134,7 @@ function App() {
         </div>
       </nav>
 
-      {authModalOpen && (
-        <SignupLogin setAuthModalOpen={setAuthModalOpen} setUser={setUser} />
-      )}
-
-      {searchOpen && (
+      {/* Auth Modal goes here (To be built by you!) */}{searchOpen && (
         <SearchOverlay 
           search={search}
           setSearch={setSearch}
@@ -233,3 +228,4 @@ function App() {
 }
 
 export default App;
+
