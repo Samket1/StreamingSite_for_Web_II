@@ -61,10 +61,10 @@ function App() {
       }
       else {
         const dbMovie = {
-          movieId: movie.id,
+          movieId: movie.id || movie.movieId,
           title: movie.title,
-          posterUrl: movie.image,
-          rating: movie.rt_score
+          posterUrl: movie.image || movie.posterUrl,
+          rating: movie.rt_score || movie.rating
         };
 
         fetch("https://streamingsite-for-web-ii.onrender.com/api/watchlist", {
@@ -177,17 +177,21 @@ function App() {
             />
           </div>
           <div className='search-results-grid'>
-            {filterMovies.map((movie) => (
-              <MovieCard
-                key={movie.id}
-                id={movie.id}
-                title={movie.title}
-                rating={movie.rt_score}
-                posterUrl={movie.image}
-                isWatched={watchlist.some((m) => m.id === movie.id)}
-                onToggleWatch={() => toggleWatchlist(movie)}
-              />
-            ))}
+            {filterMovies.map((movie) => {
+              const movieId = movie.id || movie.movieId;
+              const isInWatchlist = watchlist.some((m) => (m.id || m.movieId) === movieId);
+              return (
+                <MovieCard
+                  key={movieId}
+                  id={movieId}
+                  title={movie.title}
+                  rating={movie.rt_score || movie.rating}
+                  posterUrl={movie.image || movie.posterUrl}
+                  isWatched={isInWatchlist}
+                  onToggleWatch={() => toggleWatchlist(movie)}
+                />
+              );
+            })}
           </div>
         </div>
       )}
@@ -199,16 +203,20 @@ function App() {
             <p className='no-results'>Your watchlist is empty. Add some movies/series!</p>
           ) : (
             <div className='search-results-grid'>
-              {watchlist.map((movie) => (
-                <MovieCard
-                  key={movie.id}
-                  id={movie.id}
-                  title={movie.title}
-                  rating={movie.rt_score}
-                  posterUrl={movie.image}
-                  isWatched={true}
-                  onToggleWatch={() => toggleWatchlist(movie)} />
-              ))}</div>
+              {watchlist.map((movie) => {
+                const movieId = movie.movieId || movie.id;
+                return (
+                  <MovieCard
+                    key={movieId}
+                    id={movieId}
+                    title={movie.title}
+                    rating={movie.rating || movie.rt_score}
+                    posterUrl={movie.posterUrl || movie.image}
+                    isWatched={true}
+                    onToggleWatch={() => toggleWatchlist(movie)}
+                  />
+                );
+              })}</div>
           )}
         </div>
       )}
@@ -266,17 +274,21 @@ function App() {
           <section className='movies-section'>
             <h2 className='section-title'>Trending Now</h2>
             <div className='movies-grid'>
-              {movies.map((movie) => (
-                <MovieCard
-                  key={movie.id}
-                  id={movie.id}
-                  title={movie.title}
-                  rating={movie.rt_score}
-                  posterUrl={movie.image}
-                  isWatched={watchlist.some((m) => m.id === movie.id)}
-                  onToggleWatch={() => toggleWatchlist(movie)}
-                />
-              ))}
+              {movies.map((movie) => {
+                const movieId = movie.id || movie.movieId;
+                const isInWatchlist = watchlist.some((m) => (m.id || m.movieId) === movieId);
+                return (
+                  <MovieCard
+                    key={movieId}
+                    id={movieId}
+                    title={movie.title}
+                    rating={movie.rt_score || movie.rating}
+                    posterUrl={movie.image || movie.posterUrl}
+                    isWatched={isInWatchlist}
+                    onToggleWatch={() => toggleWatchlist(movie)}
+                  />
+                );
+              })}
             </div>
           </section>
         </main>
