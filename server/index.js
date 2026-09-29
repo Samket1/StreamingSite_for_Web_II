@@ -45,6 +45,17 @@ app.get('/api/watchlist', async (req, res) => {
 
     }
 })
+app.delete('/api/watchlist/:id', async (req, res) => {
+    try {
+        const idToDelete = req.params.id;
+        await Movie.findOneAndDelete({ movieId: idToDelete })
+        res.status(200).json({ message: "Movie Deleted " })
+    }
+    catch (error) {
+        res.status(500).json({ error: "Could not delete movie" })
+    }
+}
+);
 app.listen(PORT, () => {
     console.log("Server is running on port " + PORT);
 })   
