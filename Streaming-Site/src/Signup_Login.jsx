@@ -1,5 +1,5 @@
 ﻿import { useState } from "react";
-import { X } from "lucide-react";
+import { X, Loader } from "lucide-react";
 
 export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMode = "login" }) {
     const [authMode, setAuthMode] = useState(initialMode);
@@ -7,6 +7,7 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
     const [password, setPassword] = useState(""); // Used for oldPassword in update mode
     const [newPassword, setNewPassword] = useState("");
     const [authMessage, setAuthMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleAuthSubmit = async (e) => {
         e.preventDefault();
@@ -23,6 +24,7 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
             payload = { username: user, oldPassword: password, newPassword: newPassword };
         }
 
+        setIsLoading(true);
         try {
             const response = await fetch(url, {
                 method: method,
@@ -31,6 +33,7 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
             });
             const data = await response.json();
 
+            setIsLoading(false);
             if (response.ok) {
                 if (authMode === "login") {
                     setUser(data.username);
@@ -49,6 +52,7 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
                 setNewPassword("");
             }
         } catch (err) {
+            setIsLoading(false);
             setAuthMessage("Server is offline!");
         }
     };
@@ -93,8 +97,9 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
                         />
                     )}
 
-                    <button type="submit" className='btn-primary auth-submit-btn'>
-                        {authMode === "login" ? "Sign In" : authMode === "register" ? "Sign Up" : "Update Password"}
+                    <button type="submit" className='btn-primary auth-submit-btn' disabled={isLoading} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+                        {isLoading && <Loader size={20} className="spinner" />}
+                        {isLoading ? "Loading..." : (authMode === "login" ? "Sign In" : authMode === "register" ? "Sign Up" : "Update Password")}
                     </button>
                 </form>
 
@@ -107,9 +112,9 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
                 {authMode !== "update" && (
                     <div className='auth-switch'>
                         {authMode === "login" ? (
-                            <p>New to StreamDopamine? <span onClick={() => { setAuthMode("register"); setAuthMessage(""); }}>Sign up now.</span></p>
+                            <p>New to StreamDopamine? <span onClick={() => { setAuthMode("register"); setAuthMessage(""); setPassword(""); setNewPassword(""); }}>Sign up now.</span></p>
                         ) : (
-                            <p>Already have an account? <span onClick={() => { setAuthMode("login"); setAuthMessage(""); }}>Sign in.</span></p>
+                            <p>Already have an account? <span onClick={() => { setAuthMode("login"); setAuthMessage(""); setPassword(""); setNewPassword(""); }}>Sign in.</span></p>
                         )}
                     </div>
                 )}
@@ -117,5 +122,6 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
         </div>
     );
 }
+
 
 

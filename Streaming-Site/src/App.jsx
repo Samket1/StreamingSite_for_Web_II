@@ -21,6 +21,7 @@ function App() {
   const [search, setSearch] = useState("")
   const [searchResults, setSearchResults] = useState([])
   const [isClosing, setIsClosing] = useState(false)
+  const [isPageLoading, setIsPageLoading] = useState(true)
   const [isSearchAnimating, setIsSearchAnimating] = useState(false)
   const [watchlist, setWatchlist] = useState([]);
   const [watchlistOpen, setWatchlistOpen] = useState(false)
@@ -97,23 +98,25 @@ function App() {
 
   useEffect(() => {
     const type = activeTab === "Series" ? "tv" : "movie";
-
-    fetch(`https://api.themoviedb.org/3/trending/${type}/day?api_key=${TMDB_API_KEY}`)
-      .then(res => res.json()).then(data => setMovies(data.results || []))
-
-    fetch(`https://api.themoviedb.org/3/${type}/top_rated?api_key=${TMDB_API_KEY}`)
-      .then(res => res.json()).then(data => setTopRated(data.results || []))
+    setIsPageLoading(true);
 
     const actionId = type === "tv" ? "10759" : "28";
-    fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=${actionId}`)
-      .then(res => res.json()).then(data => setAction(data.results || []))
-
-    fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=35`)
-      .then(res => res.json()).then(data => setComedy(data.results || []))
-
     const horrorId = type === "tv" ? "9648" : "27"; 
-    fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=${horrorId}`)
-      .then(res => res.json()).then(data => setHorror(data.results || []))
+
+    Promise.all([
+        fetch(`https://api.themoviedb.org/3/trending/${type}/day?api_key=${TMDB_API_KEY}`).then(res => res.json()),
+        fetch(`https://api.themoviedb.org/3/${type}/top_rated?api_key=${TMDB_API_KEY}`).then(res => res.json()),
+        fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=${actionId}`).then(res => res.json()),
+        fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=35`).then(res => res.json()),
+        fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=${horrorId}`).then(res => res.json())
+    ]).then(([trending, top, act, com, hor]) => {
+        setMovies(trending.results || []);
+        setTopRated(top.results || []);
+        setAction(act.results || []);
+        setComedy(com.results || []);
+        setHorror(hor.results || []);
+        setIsPageLoading(false);
+    });
 
   }, [activeTab])
 
@@ -299,6 +302,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
