@@ -155,7 +155,7 @@ function App() {
     );
   }
 
-  const renderSection = (title, items, isExpanded, toggleExpand, defaultLimit = 7) => {
+  const renderSection = (title, items, isExpanded, toggleExpand, defaultLimit = 6) => {
     if (items.length === 0) return null;
     const itemsToShow = isExpanded ? items : items.slice(0, defaultLimit);
     
@@ -296,11 +296,11 @@ function App() {
             </div>
           )}
 
-          {renderSection("Trending Now", movies, showMoreTrending, () => setShowMoreTrending(!showMoreTrending), 7)}
-          {renderSection("Critically Acclaimed", topRated, showMoreTopRated, () => setShowMoreTopRated(!showMoreTopRated), 7)}
-          {renderSection("Epic Action", action, showMoreAction, () => setShowMoreAction(!showMoreAction), 7)}
-          {renderSection("Laugh Out Loud", comedy, showMoreComedy, () => setShowMoreComedy(!showMoreComedy), 7)}
-          {renderSection(activeTab === "Series" ? "Unsolved Mysteries" : "Terrifying Horror", horror, showMoreHorror, () => setShowMoreHorror(!showMoreHorror), 7)}
+          {renderSection("Trending Now", movies, showMoreTrending, () => setShowMoreTrending(!showMoreTrending), 6)}
+          {renderSection("Critically Acclaimed", topRated, showMoreTopRated, () => setShowMoreTopRated(!showMoreTopRated), 6)}
+          {renderSection("Epic Action", action, showMoreAction, () => setShowMoreAction(!showMoreAction), 6)}
+          {renderSection("Laugh Out Loud", comedy, showMoreComedy, () => setShowMoreComedy(!showMoreComedy), 6)}
+          {renderSection(activeTab === "Series" ? "Unsolved Mysteries" : "Terrifying Horror", horror, showMoreHorror, () => setShowMoreHorror(!showMoreHorror), 6)}
             </>
           )}
         </main>
@@ -310,6 +310,8 @@ function App() {
 }
 
 export default App;
+
+
 
 
 
