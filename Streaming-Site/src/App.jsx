@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from 'react'
-import { Bell, Film, Search, Play, Home, Tv, Bookmark, ChevronDown, ChevronUp } from 'lucide-react'
+import { Bell, Film, Search, Play, Home, Tv, Bookmark, ChevronDown, ChevronUp, Loader } from 'lucide-react'
 import MovieDetails from './MovieDetails';
 import MovieCard from './MovieCard';
 import SearchOverlay from './SearchOverlay';
@@ -266,7 +266,14 @@ function App() {
         </aside>
 
         <main className='main-content'>
-          {movies.length > 0 && (
+          {isPageLoading ? (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', flexDirection: 'column', gap: '20px' }}>
+                <Loader size={48} color="#e50914" className="spinner" />
+                <h2 style={{ color: '#fff', fontSize: '24px', fontWeight: 'bold' }}>Loading {activeTab}...</h2>
+            </div>
+          ) : (
+            <>
+              {movies.length > 0 && (
             <div
               className='hero-banner'
               style={{ backgroundImage: `linear-gradient(to top, #0b0c10 0%, rgba(11, 12, 16, 0.2) 100%), url(https://image.tmdb.org/t/p/original${movies[0].backdrop_path || movies[0].poster_path})` }}
@@ -294,7 +301,8 @@ function App() {
           {renderSection("Epic Action", action, showMoreAction, () => setShowMoreAction(!showMoreAction), 7)}
           {renderSection("Laugh Out Loud", comedy, showMoreComedy, () => setShowMoreComedy(!showMoreComedy), 7)}
           {renderSection(activeTab === "Series" ? "Unsolved Mysteries" : "Terrifying Horror", horror, showMoreHorror, () => setShowMoreHorror(!showMoreHorror), 7)}
-
+            </>
+          )}
         </main>
       </div>
     </div>
@@ -302,6 +310,8 @@ function App() {
 }
 
 export default App;
+
+
 
 
 

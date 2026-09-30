@@ -104,7 +104,12 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
                 </form>
 
                 {authMessage && (
-                    <p className='auth-message' style={{ color: authMessage.includes("offline") || authMessage.includes("error") || authMessage.includes("already") || authMessage.includes("Wrong") ? "#e50914" : "#4ade80" }}>
+                    <p className='auth-message' style={{ 
+                        color: authMessage.includes("Success") || authMessage.includes("updated") ? "#4ade80" : "#e50914",
+                        textShadow: authMessage.includes("Success") || authMessage.includes("updated") ? "0 0 10px #4ade80" : "0 0 10px #e50914",
+                        fontWeight: "bold",
+                        textAlign: "center"
+                    }}>
                         {authMessage}
                     </p>
                 )}
@@ -122,6 +127,7 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
         </div>
     );
 }
+
 
 
 
