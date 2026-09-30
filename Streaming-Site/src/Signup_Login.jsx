@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { X } from "lucide-react";
 
 export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMode = "login" }) {
@@ -11,14 +11,14 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
     const handleAuthSubmit = async (e) => {
         e.preventDefault();
 
-        let url = "http://localhost:5000/api/auth/register";
+        let url = "https://streamingsite-for-web-ii.onrender.com/api/auth/register";
         let method = "POST";
         let payload = { username, password };
 
         if (authMode === "login") {
-            url = "http://localhost:5000/api/auth/login";
+            url = "https://streamingsite-for-web-ii.onrender.com/api/auth/login";
         } else if (authMode === "update") {
-            url = "http://localhost:5000/api/auth/update-password";
+            url = "https://streamingsite-for-web-ii.onrender.com/api/auth/update-password";
             method = "PUT";
             payload = { username: user, oldPassword: password, newPassword: newPassword };
         }
@@ -117,4 +117,5 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
         </div>
     );
 }
+
 

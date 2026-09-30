@@ -53,7 +53,7 @@ function App() {
     const isAlreadyIn = watchlist.some((m) => (m.id || m.movieId) == clickedId);
 
     if (isAlreadyIn) {
-      fetch(`http://localhost:5000/api/watchlist/${user}/${clickedId}`, { method: "DELETE" });
+      fetch(`https://streamingsite-for-web-ii.onrender.com/api/watchlist/${user}/${clickedId}`, { method: "DELETE" });
       setWatchlist((prev) => prev.filter((m) => (m.id || m.movieId) != clickedId));
     } else {
       const dbMovie = {
@@ -64,7 +64,7 @@ function App() {
         rating: movie.vote_average ? (movie.vote_average * 10).toFixed(0).toString() : movie.rating
       };
 
-      fetch("http://localhost:5000/api/watchlist", {
+      fetch("https://streamingsite-for-web-ii.onrender.com/api/watchlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dbMovie)
@@ -131,7 +131,7 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      fetch(`http://localhost:5000/api/watchlist/${user}`)
+      fetch(`https://streamingsite-for-web-ii.onrender.com/api/watchlist/${user}`)
         .then(res => res.json())
         .then(data => setWatchlist(Array.isArray(data) ? data : []));
     } else {
@@ -299,6 +299,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
