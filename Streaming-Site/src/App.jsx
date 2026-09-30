@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Bell, Film, Search, Play, Home, Tv, Bookmark, ChevronDown, ChevronUp } from 'lucide-react'
 import MovieDetails from './MovieDetails';
 import MovieCard from './MovieCard';
@@ -299,4 +299,6 @@ function App() {
 }
 
 export default App;
+
+
 
