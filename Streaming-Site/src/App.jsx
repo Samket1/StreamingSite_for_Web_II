@@ -32,6 +32,10 @@ function App() {
   const [authModalMode, setAuthModalMode] = useState("login")
 
   const [showMoreTrending, setShowMoreTrending] = useState(false)
+  const [showMoreTopRated, setShowMoreTopRated] = useState(false)
+  const [showMoreAction, setShowMoreAction] = useState(false)
+  const [showMoreComedy, setShowMoreComedy] = useState(false)
+  const [showMoreHorror, setShowMoreHorror] = useState(false)
 
   const triggerSearchOpen = () => {
     setSearchOpen(true)
@@ -148,15 +152,15 @@ function App() {
     );
   }
 
-  const trendingToShow = showMoreTrending ? movies : movies.slice(0, 10);
-
-  const renderSection = (title, items, limit) => {
+  const renderSection = (title, items, isExpanded, toggleExpand, defaultLimit = 7) => {
     if (items.length === 0) return null;
+    const itemsToShow = isExpanded ? items : items.slice(0, defaultLimit);
+    
     return (
       <section className='movies-section' style={{ marginTop: '40px' }}>
         <h2 className='section-title'>{title}</h2>
         <div className='movies-grid'>
-          {items.slice(0, limit).map((movie) => {
+          {itemsToShow.map((movie) => {
             const movieId = movie.id || movie.movieId;
             const isInWatchlist = watchlist.some((m) => (m.id || m.movieId) == movieId);
             return (
@@ -173,6 +177,18 @@ function App() {
             );
           })}
         </div>
+        {items.length > defaultLimit && (
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+              <button 
+                  className="btn-secondary" 
+                  style={{ padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}
+                  onClick={toggleExpand}
+              >
+                  {isExpanded ? "Show Less" : "See More"} 
+                  {isExpanded ? <ChevronUp size={18}/> : <ChevronDown size={18}/>}
+              </button>
+          </div>
+        )}
       </section>
     );
   };
@@ -270,46 +286,11 @@ function App() {
             </div>
           )}
 
-          <section className='movies-section'>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <h2 className='section-title' style={{ marginBottom: 0 }}>Trending Now</h2>
-            </div>
-            
-            <div className='movies-grid'>
-              {trendingToShow.map((movie) => {
-                const movieId = movie.id || movie.movieId;
-                const isInWatchlist = watchlist.some((m) => (m.id || m.movieId) == movieId);
-                return (
-                  <MovieCard
-                    key={movieId}
-                    id={movieId}
-                    title={movie.title || movie.name}
-                    rating={movie.vote_average ? (movie.vote_average * 10).toFixed(0) : movie.rating}
-                    posterUrl={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : movie.posterUrl}
-                    isWatched={isInWatchlist}
-                    onToggleWatch={() => toggleWatchlist(movie)}
-                    onCardClick={() => setSelectedMovie(movie)}
-                  />
-                );
-              })}
-            </div>
-            
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                <button 
-                    className="btn-secondary" 
-                    style={{ padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}
-                    onClick={() => setShowMoreTrending(!showMoreTrending)}
-                >
-                    {showMoreTrending ? "Show Less" : "See More"} 
-                    {showMoreTrending ? <ChevronUp size={18}/> : <ChevronDown size={18}/>}
-                </button>
-            </div>
-          </section>
-
-          {renderSection("Critically Acclaimed", topRated, 5)}
-          {renderSection("Epic Action", action, 5)}
-          {renderSection("Laugh Out Loud", comedy, 5)}
-          {renderSection(activeTab === "Series" ? "Unsolved Mysteries" : "Terrifying Horror", horror, 5)}
+          {renderSection("Trending Now", movies, showMoreTrending, () => setShowMoreTrending(!showMoreTrending), 7)}
+          {renderSection("Critically Acclaimed", topRated, showMoreTopRated, () => setShowMoreTopRated(!showMoreTopRated), 7)}
+          {renderSection("Epic Action", action, showMoreAction, () => setShowMoreAction(!showMoreAction), 7)}
+          {renderSection("Laugh Out Loud", comedy, showMoreComedy, () => setShowMoreComedy(!showMoreComedy), 7)}
+          {renderSection(activeTab === "Series" ? "Unsolved Mysteries" : "Terrifying Horror", horror, showMoreHorror, () => setShowMoreHorror(!showMoreHorror), 7)}
 
         </main>
       </div>
@@ -318,3 +299,4 @@ function App() {
 }
 
 export default App;
+

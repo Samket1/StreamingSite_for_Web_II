@@ -344,6 +344,8 @@ body::before {
 }
 
 .movies-grid .movie-card:hover {
+      box-shadow: 0 0 25px rgba(229, 9, 20, 0.8), 0 0 50px rgba(229, 9, 20, 0.4);
+      border: 1px solid rgba(229, 9, 20, 0.8);
     filter: saturate(100%) opacity(1);
     transform: translateY(-8px) scale(1.03);
 }
@@ -983,6 +985,8 @@ body::before {
 }
 
 .search-results-grid .movie-card:hover {
+      box-shadow: 0 0 25px rgba(229, 9, 20, 0.8), 0 0 50px rgba(229, 9, 20, 0.4);
+      border: 1px solid rgba(229, 9, 20, 0.8);
     filter: saturate(100%) opacity(1);
     transform: translateY(-8px) scale(1.03);
 }
@@ -1031,6 +1035,8 @@ body::before {
 
     .movies-grid .movie-card:hover,
     .search-results-grid .movie-card:hover {
+      box-shadow: 0 0 25px rgba(229, 9, 20, 0.8), 0 0 50px rgba(229, 9, 20, 0.4);
+      border: 1px solid rgba(229, 9, 20, 0.8);
         filter: none !important;
         opacity: 1 !important;
         transform: none !important;
@@ -1181,4 +1187,6 @@ body::before {
     box-shadow: none !important; /* Remove shadows */
   }
 }
+
+
 
