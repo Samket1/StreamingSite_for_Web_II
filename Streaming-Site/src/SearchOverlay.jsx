@@ -34,13 +34,13 @@ export default function SearchOverlay({
       </div>
 
       {isPreSearch && (
-        <h2 style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '20px', fontWeight: '600', marginBottom: '16px', width: '90%', maxWidth: '1200px' }}>
+        <h2 className="search-overlay-subtitle">
           Trending & Popular Searches
         </h2>
       )}
 
       {filterMovies.length === 0 && !isPreSearch ? (
-        <div className='no-results' style={{ marginTop: '40px', fontSize: '18px', color: 'rgba(255, 255, 255, 0.6)' }}>
+        <div className="no-results" style={{ marginTop: "40px", fontSize: "18px" }}>
           No movies or TV shows found matching "{search}"
         </div>
       ) : (

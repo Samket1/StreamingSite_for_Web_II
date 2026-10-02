@@ -1,4 +1,4 @@
-const express = require("express");
+﻿const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
@@ -51,7 +51,7 @@ app.get('/api/watchlist/:username', async (req, res) => {
         res.status(500).json({ error: "Could not fetch" });
     }
 });
-
+//add something to watchlist
 app.post('/api/watchlist', async (req, res) => {
     try {
         const movieData = req.body;
@@ -62,7 +62,7 @@ app.post('/api/watchlist', async (req, res) => {
         res.status(500).json({ error: "Something went wrong saving the movie." });
     }
 });
-
+//delete aka remove from watchlist
 app.delete('/api/watchlist/:username/:movieId', async (req, res) => {
     try {
         await Movie.findOneAndDelete({
@@ -74,7 +74,7 @@ app.delete('/api/watchlist/:username/:movieId', async (req, res) => {
         res.status(500).json({ error: "Could not delete movie" });
     }
 });
-
+//signup
 app.post('/api/auth/register', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -95,7 +95,7 @@ app.post('/api/auth/register', async (req, res) => {
         res.status(500).json({ error: "Server error duriing registeration" });
     }
 });
-
+//login
 app.post('/api/auth/login', async (req, res) => {
     try {
         const { username, password } = req.body;

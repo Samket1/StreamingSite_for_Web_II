@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Bell, Film, Search, Play, Home, Tv, Bookmark, ChevronDown, ChevronUp, Loader } from 'lucide-react'
+import { Bell, Film, Search, Play, Home, Tv, Bookmark, ChevronDown, ChevronUp, Loader, Sun, Moon } from 'lucide-react'
 import MovieDetails from './MovieDetails';
 import MovieCard from './MovieCard';
 import SearchOverlay from './SearchOverlay';
@@ -14,6 +14,22 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark')
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    localStorage.setItem('theme', nextTheme);
+  };
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.body.classList.add('light-mode');
+    } else {
+      document.body.classList.remove('light-mode');
+    }
+  }, [theme])
+  
   const [activeTab, setActiveTab] = useState("Home")
   const [movies, setMovies] = useState([])
   const [topRated, setTopRated] = useState([])
@@ -283,7 +299,7 @@ function App() {
         initialPlaying={isWatchMode}
         onPlayToggle={(playing) => {
           if (playing) {
-            navigate(`/movies/${movieId}/watch`);
+            navigate(`/movies/${movieIdw}/watch`);
           } else {
             navigate(`/movies/${movieId}/detail`);
           }
@@ -349,6 +365,16 @@ function App() {
             <Search size={20} />
           </button>
 
+          {/* Light / Dark Mode Toggle */}
+          <button 
+            className="theme-toggle-btn"
+            onClick={toggleTheme}
+            title={theme === 'dark' ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? <Moon size={20} /> : <Sun size={20} className="theme-sun-icon" />}
+          </button>
+
           {user ? (
             <div className="user-dropdown-container" style={{ position: 'relative' }}>
               <button 
@@ -367,12 +393,12 @@ function App() {
                     position: 'absolute',
                     top: 'calc(100% + 8px)',
                     right: 0,
-                    backgroundColor: '#161922',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    backgroundColor: theme === 'light' ? '#ffffff' : '#161922',
+                    border: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.12)' : '1px solid rgba(255, 255, 255, 0.15)',
                     borderRadius: '8px',
                     padding: '6px',
                     minWidth: '180px',
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
+                    boxShadow: theme === 'light' ? '0 12px 30px rgba(0,0,0,0.12)' : '0 8px 24px rgba(0,0,0,0.5)',
                     zIndex: 1000,
                     display: 'flex',
                     flexDirection: 'column',
@@ -383,7 +409,7 @@ function App() {
                     style={{
                       background: 'transparent',
                       border: 'none',
-                      color: '#e2e8f0',
+                      color: theme === 'light' ? '#0f172a' : '#e2e8f0',
                       padding: '10px 14px',
                       borderRadius: '6px',
                       textAlign: 'left',
@@ -394,7 +420,7 @@ function App() {
                       gap: '8px',
                       transition: 'background 0.2s'
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = theme === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)'}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     onClick={() => { 
                       setSettingsDropdownOpen(false);
@@ -405,7 +431,7 @@ function App() {
                     Change Password
                   </button>
 
-                  <div style={{ height: '1px', backgroundColor: 'rgba(255,255,255,0.08)', margin: '2px 0' }} />
+                  <div style={{ height: '1px', backgroundColor: theme === 'light' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)', margin: '2px 0' }} />
 
                   <button 
                     style={{
