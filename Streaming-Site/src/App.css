@@ -714,8 +714,15 @@ body::before {
 
 /* --- SEARCH OVERLAY ANIMATIONS --- */
 @keyframes overlayFadeIn {
-    0% { opacity: 0; backdrop-filter: blur(0px); }
-    100% { opacity: 1; backdrop-filter: blur(25px); }
+    0% {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+
+    100% {
+        opacity: 1;
+        backdrop-filter: blur(25px);
+    }
 }
 
 @keyframes searchPopIn {
@@ -744,13 +751,27 @@ body::before {
 
 /* --- SEARCH OVERLAY CLOSE ANIMATIONS --- */
 @keyframes overlayFadeOut {
-    0% { opacity: 1; backdrop-filter: blur(25px); }
-    100% { opacity: 0; backdrop-filter: blur(0px); }
+    0% {
+        opacity: 1;
+        backdrop-filter: blur(25px);
+    }
+
+    100% {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
 }
 
 @keyframes searchPopOut {
-    0% { opacity: 1; transform: scale(1) translateY(0); }
-    100% { opacity: 0; transform: scale(0.94) translateY(-14px); }
+    0% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.94) translateY(-14px);
+    }
 }
 
 .search-overlay.closing {
@@ -1188,16 +1209,19 @@ body::before {
 
 /* MOBILE BLUR & BACKGROUND SUPPORT (Restored) */
 @media (max-width: 768px) {
-  body::before {
-    filter: blur(8px);
-    background-size: cover;
-  }
-  .navbar {
-    backdrop-filter: blur(25px);
-  }
-  .search-overlay, .auth-overlay {
-    backdrop-filter: blur(20px);
-  }
+    body::before {
+        filter: blur(8px);
+        background-size: cover;
+    }
+
+    .navbar {
+        backdrop-filter: blur(25px);
+    }
+
+    .search-overlay,
+    .auth-overlay {
+        backdrop-filter: blur(20px);
+    }
 }
 
 
@@ -1621,7 +1645,7 @@ body.light-mode::after {
 
 /* Translucent frosted navbar with red accent border */
 body.light-mode .navbar {
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.35);
     backdrop-filter: blur(25px);
     border-bottom: 1px solid rgba(229, 9, 20, 0.12);
     box-shadow: 0 4px 25px rgba(229, 9, 20, 0.04), 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -1639,7 +1663,7 @@ body.light-mode .logo-highlight {
 
 /* Sidebar with ruby wash and vibrant active pill */
 body.light-mode .sidebar {
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(255, 255, 255, 0.45);
     backdrop-filter: blur(25px);
     border-right: 1px solid rgba(229, 9, 20, 0.08);
 }
@@ -1692,7 +1716,8 @@ body.light-mode .movie-card h3 {
 }
 
 body.light-mode .rating-container {
-    color: #b45309; /* Warm rich amber */
+    color: #b45309;
+    /* Warm rich amber */
     font-weight: 700;
 }
 
@@ -1796,4 +1821,21 @@ body.light-mode .loading-text {
         padding: 20px;
         margin: auto auto;
     }
+}
+
+body.light-mode .auth-switch {
+    color: #64748b;
+}
+
+body.light-mode .auth-switch span {
+    color: #0f172a !important;
+    font-weight: 700;
+    cursor: pointer;
+    margin-left: 5px;
+    transition: color 0.2s ease;
+}
+
+body.light-mode .auth-switch span:hover {
+    color: #e50914 !important;
+    text-decoration: underline;
 }
