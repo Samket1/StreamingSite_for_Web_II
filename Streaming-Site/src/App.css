@@ -520,6 +520,8 @@ body::before {
 
     .app-body {
         flex-direction: column;
+        width: 100%;
+        align-items: stretch;
     }
 
     .sidebar {
@@ -566,8 +568,12 @@ body::before {
     }
 
     .main-content {
+        width: 100%;
         padding: 15px 15px 90px 15px;
         gap: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
     }
 
     /* Shrink hero banner */
@@ -1744,4 +1750,49 @@ body.light-mode .user-settings-dropdown {
     background: #ffffff !important;
     border: 1px solid rgba(226, 232, 240, 0.9) !important;
     box-shadow: 0 12px 35px rgba(15, 23, 42, 0.1) !important;
+}
+
+
+/* =========================================================
+   CENTERED LOADING SPINNER & ANIMATIONS (MOBILE & DESKTOP)
+   ========================================================= */
+
+.page-loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    min-height: 60vh;
+    flex: 1;
+    text-align: center;
+    padding: 40px 20px;
+    margin: 0 auto;
+}
+
+.loading-text {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+    letter-spacing: -0.3px;
+}
+
+body.light-mode .loading-text {
+    color: #0f172a;
+}
+
+@media (max-width: 768px) {
+    .page-loading-container {
+        width: 100%;
+        min-height: calc(100vh - 180px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        margin: auto auto;
+    }
 }

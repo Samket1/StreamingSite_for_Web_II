@@ -285,9 +285,9 @@ function App() {
   if (routeMovieId) {
     if (isMovieLoading || !selectedMovie) {
       return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', gap: '20px', backgroundColor: '#0b0c10' }}>
+        <div className="page-loading-container" style={{ minHeight: '100vh' }}>
           <Loader size={48} color="#e50914" className="spinner" />
-          <h2 style={{ color: '#fff', fontSize: '24px', fontWeight: 'bold' }}>Loading Movie...</h2>
+          <h2 className="loading-text">Loading Movie...</h2>
         </div>
       );
     }
@@ -517,9 +517,9 @@ function App() {
 
         <main className='main-content'>
           {isPageLoading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', flexDirection: 'column', gap: '20px' }}>
+            <div className="page-loading-container">
               <Loader size={48} color="#e50914" className="spinner" />
-              <h2 style={{ color: '#fff', fontSize: '24px', fontWeight: 'bold' }}>Loading {activeTab}...</h2>
+              <h2 className="loading-text">Loading {activeTab}...</h2>
             </div>
           ) : (
             <>
