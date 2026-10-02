@@ -39,10 +39,12 @@ const User = mongoose.model("User", userSchema);
 const Movie = mongoose.model("Movie", movieSchema);
 const PORT = 5000;
 
+//base route aka test if backend is alive
 app.get('/', (request, response) => {
     response.send("Welcome to StreamDopamine! The backend is officially ALIVE!");
 });
 
+//fetch all saved movies in a user's watchlist
 app.get('/api/watchlist/:username', async (req, res) => {
     try {
         const userWatchlist = await Movie.find({ username: req.params.username });
