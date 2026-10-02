@@ -310,7 +310,7 @@ body::before {
     border-radius: 12px;
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, border-radius 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     backdrop-filter: blur(20px);
 
 
@@ -708,13 +708,8 @@ body::before {
 
 /* --- SEARCH OVERLAY ANIMATIONS --- */
 @keyframes overlayFadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    0% { opacity: 0; backdrop-filter: blur(0px); }
+    100% { opacity: 1; backdrop-filter: blur(25px); }
 }
 
 @keyframes searchPopIn {
@@ -743,25 +738,13 @@ body::before {
 
 /* --- SEARCH OVERLAY CLOSE ANIMATIONS --- */
 @keyframes overlayFadeOut {
-    from {
-        opacity: 1;
-    }
-
-    to {
-        opacity: 0;
-    }
+    0% { opacity: 1; backdrop-filter: blur(25px); }
+    100% { opacity: 0; backdrop-filter: blur(0px); }
 }
 
 @keyframes searchPopOut {
-    from {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-
-    to {
-        opacity: 0;
-        transform: scale(0.85) translateY(20px);
-    }
+    0% { opacity: 1; transform: scale(1) translateY(0); }
+    100% { opacity: 0; transform: scale(0.94) translateY(-14px); }
 }
 
 .search-overlay.closing {
@@ -1197,43 +1180,18 @@ body::before {
     }
 }
 
-/* PERFORMANCE OPTIMIZATIONS FOR MOBILE (Fixing the lag) */
+/* MOBILE BLUR & BACKGROUND SUPPORT (Restored) */
 @media (max-width: 768px) {
-    body::before {
-        filter: none;
-        /* Disable heavy background blur */
-        background-color: #0b0c10;
-        background-image: none;
-        /* Remove heavy bg image on mobile */
-    }
-
-    .navbar,
-    .sidebar,
-    .search-overlay,
-    .auth-overlay,
-    .card-eye-btn {
-        backdrop-filter: none !important;
-        /* Disable all glassmorphism on mobile */
-    }
-
-    .sidebar {
-        background-color: #0b0c10 !important;
-        /* Solid color */
-    }
-
-    .navbar {
-        background-color: rgba(11, 12, 16, 0.95) !important;
-    }
-
-    .search-overlay,
-    .auth-overlay {
-        background-color: rgba(11, 12, 16, 0.98) !important;
-    }
-
-    .movie-card {
-        box-shadow: none !important;
-        /* Remove shadows */
-    }
+  body::before {
+    filter: blur(8px);
+    background-size: cover;
+  }
+  .navbar {
+    backdrop-filter: blur(25px);
+  }
+  .search-overlay, .auth-overlay {
+    backdrop-filter: blur(20px);
+  }
 }
 
 
@@ -1637,4 +1595,153 @@ body.light-mode .movie-card.is-in-watchlist:hover .rating-container span {
 .movie-card.is-in-watchlist:hover .rating-container,
 .movie-card.is-in-watchlist:hover .rating-container span {
     color: #ffffff !important;
+}
+
+/* =========================================================
+   RICH COLOR PALETTE & REFINED GLASS AESTHETICS (LIGHT MODE)
+   ========================================================= */
+
+/* Warm rose & slate daylight background */
+body.light-mode {
+    background-color: #f8fafc;
+    color: #0f172a;
+}
+
+body.light-mode::after {
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(254, 242, 242, 0.88) 40%, rgba(241, 245, 249, 0.94) 100%), url("./assets/bg.jpg");
+    filter: blur(12px);
+    opacity: 1;
+}
+
+/* Translucent frosted navbar with red accent border */
+body.light-mode .navbar {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(25px);
+    border-bottom: 1px solid rgba(229, 9, 20, 0.12);
+    box-shadow: 0 4px 25px rgba(229, 9, 20, 0.04), 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+body.light-mode .logo-text {
+    color: #0f172a;
+}
+
+body.light-mode .logo-highlight {
+    background: linear-gradient(135deg, #e50914 0%, #ff4b55 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Sidebar with ruby wash and vibrant active pill */
+body.light-mode .sidebar {
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(25px);
+    border-right: 1px solid rgba(229, 9, 20, 0.08);
+}
+
+body.light-mode .sidebar-item {
+    color: #475569;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.light-mode .sidebar-item:hover {
+    background-color: rgba(229, 9, 20, 0.06);
+    color: #e50914;
+    transform: translateX(4px);
+}
+
+body.light-mode .sidebar-item.active {
+    background: linear-gradient(90deg, rgba(229, 9, 20, 0.12) 0%, rgba(229, 9, 20, 0.02) 100%);
+    color: #e50914;
+    font-weight: 800;
+    border-right: 3px solid #e50914;
+}
+
+/* Hero Section in Light Mode */
+body.light-mode .hero-badge {
+    background: linear-gradient(135deg, #e50914 0%, #ff4b55 100%);
+    box-shadow: 0 4px 14px rgba(229, 9, 20, 0.35);
+}
+
+body.light-mode .hero-title {
+    color: #0f172a;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+}
+
+body.light-mode .hero-desc {
+    color: #334155;
+    text-shadow: none;
+    font-weight: 500;
+}
+
+/* Movie Cards: Clean white card with red/amber rating tags */
+body.light-mode .movie-card {
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+}
+
+body.light-mode .movie-card h3 {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+body.light-mode .rating-container {
+    color: #b45309; /* Warm rich amber */
+    font-weight: 700;
+}
+
+/* Section titles with vibrant crimson accent */
+body.light-mode .section-title {
+    color: #0f172a;
+    border-left: 4px solid #e50914;
+    padding-left: 12px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+
+/* Search Overlay: Ambient crimson glow backdrop */
+body.light-mode .search-overlay {
+    background: radial-gradient(circle at 50% 12%, rgba(229, 9, 20, 0.08) 0%, rgba(248, 250, 252, 0.96) 65%);
+    backdrop-filter: blur(25px);
+}
+
+body.light-mode .search-overlay-title {
+    background: linear-gradient(135deg, #0f172a 0%, #334155 70%, #e50914 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body.light-mode .search-overlay-input {
+    background-color: #ffffff;
+    border: 2px solid rgba(226, 232, 240, 0.9);
+    color: #0f172a;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+body.light-mode .search-overlay-input:focus {
+    border-color: #e50914;
+    box-shadow: 0 8px 30px rgba(229, 9, 20, 0.15), 0 0 0 3px rgba(229, 9, 20, 0.12);
+}
+
+body.light-mode .search-overlay-tags button {
+    background: rgba(255, 255, 255, 0.85);
+    color: #475569;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.light-mode .search-overlay-tags button:hover {
+    background: #e50914;
+    color: #ffffff;
+    border-color: #e50914;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+}
+
+/* User Settings Dropdown in Light Mode */
+body.light-mode .user-settings-dropdown {
+    background: #ffffff !important;
+    border: 1px solid rgba(226, 232, 240, 0.9) !important;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.1) !important;
 }

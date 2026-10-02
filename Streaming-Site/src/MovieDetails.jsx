@@ -102,27 +102,20 @@ export default function MovieDetails({ movie, onBack, isWatched, onToggleWatch, 
 
       {/* IN-APP VIDEO PLAYER MODAL */}
       {isPlaying && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: '#0b0c10', zIndex: 9999, display: 'flex', flexDirection: 'column', overflowY: 'auto'
+        <div className="watch-player-modal" style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          zIndex: 9999, display: "flex", flexDirection: "column", overflowY: "auto"
         }}>
           {/* Player Controls Bar */}
-          <div style={{
-            display: 'flex', justifyContent: 'space-between', padding: '15px 20px',
-            backgroundColor: '#111', alignItems: 'center', flexShrink: 0, flexWrap: 'wrap', gap: '10px'
+          <div className="watch-player-bar" style={{
+            display: "flex", justifyContent: "space-between", padding: "15px 20px",
+            alignItems: "center", flexShrink: 0, flexWrap: "wrap", gap: "10px"
           }}>
             {/* Left Side: Server and Episodes */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '15px', flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Server size={20} color="#e50914" />
-                <select
-                  value={videoSource}
-                  onChange={(e) => setVideoSource(e.target.value)}
-                  style={{
-                    backgroundColor: '#222', color: 'white', padding: '8px',
-                    borderRadius: '5px', border: '1px solid #333', outline: 'none'
-                  }}
-                >
+                <select className="watch-player-select" value={videoSource} onChange={(e) => setVideoSource(e.target.value)} style={{ padding: "8px", borderRadius: "6px", outline: "none", cursor: "pointer" }}>
                   <option value="vidsrc">Server 1 (VidSrc)</option>
                   <option value="vidsrc2">Server 2 (VidSrc2)</option>
                   <option value="2embed">Server 3 (2Embed)</option>
@@ -132,20 +125,12 @@ export default function MovieDetails({ movie, onBack, isWatched, onToggleWatch, 
 
               {isTV && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <select
-                    value={season}
-                    onChange={(e) => setSeason(e.target.value)}
-                    style={{ backgroundColor: '#222', color: 'white', padding: '8px', borderRadius: '5px', border: '1px solid #333', outline: 'none' }}
-                  >
+                  <select className="watch-player-select" value={season} onChange={(e) => setSeason(e.target.value)} style={{ padding: "8px", borderRadius: "6px", outline: "none", cursor: "pointer" }}>
                     {[...Array(10)].map((_, i) => (
                       <option key={i + 1} value={i + 1}>Season {i + 1}</option>
                     ))}
                   </select>
-                  <select
-                    value={episode}
-                    onChange={(e) => setEpisode(e.target.value)}
-                    style={{ backgroundColor: '#222', color: 'white', padding: '8px', borderRadius: '5px', border: '1px solid #333', outline: 'none' }}
-                  >
+                  <select className="watch-player-select" value={episode} onChange={(e) => setEpisode(e.target.value)} style={{ padding: "8px", borderRadius: "6px", outline: "none", cursor: "pointer" }}>
                     {[...Array(24)].map((_, i) => (
                       <option key={i + 1} value={i + 1}>Episode {i + 1}</option>
                     ))}
@@ -155,13 +140,7 @@ export default function MovieDetails({ movie, onBack, isWatched, onToggleWatch, 
             </div>
 
             {/* Close Button */}
-            <button
-              onClick={() => { setIsPlaying(false); if (onPlayToggle) onPlayToggle(false); }}
-              style={{
-                background: 'transparent', border: 'none', color: 'white',
-                cursor: 'pointer', display: 'flex', alignItems: 'center'
-              }}
-            >
+            <button className="watch-player-close" onClick={() => { setIsPlaying(false); if (onPlayToggle) onPlayToggle(false); }} style={{ background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center" }}>
               <X size={28} />
             </button>
           </div>

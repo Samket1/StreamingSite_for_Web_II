@@ -5,11 +5,12 @@ export default function WatchlistOverlay({
   watchlist,
   setWatchlistOpen,
   toggleWatchlist,
-  setSelectedMovie
+  setSelectedMovie,
+  isClosing = false
 }) {
   return (
-    <div className='search-overlay'>
-      <button className='close-search-btn' onClick={() => setWatchlistOpen(false)}>
+    <div className={`search-overlay ${isClosing ? "closing" : ""}`}>
+      <button className='close-search-btn' onClick={() => setWatchlistOpen(false)} title="Close watchlist">
         <X size={22} />
       </button>
       <h1 className='search-overlay-title'>Your Watchlist has {watchlist.length} movies/shows</h1>

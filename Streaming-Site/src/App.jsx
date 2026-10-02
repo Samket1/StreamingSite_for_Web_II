@@ -45,6 +45,7 @@ function App() {
   const [isSearchAnimating, setIsSearchAnimating] = useState(false)
   const [watchlist, setWatchlist] = useState([]);
   const [watchlistOpen, setWatchlistOpen] = useState(false)
+  const [isWatchlistClosing, setIsWatchlistClosing] = useState(false)
 
   const [selectedMovie, setSelectedMovie] = useState(null)
   const [isMovieLoading, setIsMovieLoading] = useState(false)
@@ -492,6 +493,7 @@ function App() {
           setWatchlistOpen={closeWatchlist}
           toggleWatchlist={toggleWatchlist}
           setSelectedMovie={openMovieDetails}
+          isClosing={isWatchlistClosing}
         />
       )}
 
@@ -522,7 +524,7 @@ function App() {
               {movies.length > 0 && (
                 <div
                   className='hero-banner'
-                  style={{ backgroundImage: `linear-gradient(to top, #0b0c10 0%, rgba(11, 12, 16, 0.2) 100%), url(https://image.tmdb.org/t/p/original${movies[0].backdrop_path || movies[0].poster_path})` }}
+                  style={{ backgroundImage: `linear-gradient(to top, ${theme === 'light' ? 'rgba(248, 250, 252, 0.95)' : '#0b0c10'} 0%, ${theme === 'light' ? 'rgba(248, 250, 252, 0.4)' : 'rgba(11, 12, 16, 0.2)'} 60%, transparent 100%), url(https://image.tmdb.org/t/p/original${movies[0].backdrop_path || movies[0].poster_path})` }}
                 >
                   <div className='hero-content'>
                     <span className='hero-badge'>Featured</span>

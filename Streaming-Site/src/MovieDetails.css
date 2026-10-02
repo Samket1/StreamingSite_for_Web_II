@@ -275,3 +275,143 @@
     font-size: 0.85rem;
   }
 }
+
+
+/* =========================================================
+   LIGHT MODE FOR MOVIE DETAILS & WATCH PLAYER
+   ========================================================= */
+
+.movie-details-container {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+body.light-mode .movie-details-container {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+body.light-mode .banner-gradient {
+  background: linear-gradient(to top, #f8fafc 0%, rgba(248, 250, 252, 0.9) 40%, rgba(248, 250, 252, 0.3) 75%, transparent 100%);
+}
+
+body.light-mode .back-btn {
+  background: rgba(255, 255, 255, 0.85);
+  color: #0f172a;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .back-btn:hover {
+  background: #e50914;
+  color: #ffffff;
+  border-color: #e50914;
+  box-shadow: 0 6px 20px rgba(229, 9, 20, 0.35);
+}
+
+body.light-mode .topbar-logo {
+  color: #e50914;
+}
+
+body.light-mode .movie-details-title {
+  background: linear-gradient(90deg, #0f172a 0%, #1e293b 65%, #e50914 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+}
+
+body.light-mode .movie-details-genres {
+  color: #e50914;
+  font-weight: 700;
+}
+
+body.light-mode .movie-details-meta {
+  color: #475569;
+}
+
+body.light-mode .rating-badge {
+  background: rgba(229, 9, 20, 0.1);
+  color: #e50914;
+  border: 1px solid rgba(229, 9, 20, 0.2);
+}
+
+body.light-mode .movie-details-director .label {
+  color: #64748b;
+}
+
+body.light-mode .movie-details-director {
+  color: #0f172a;
+}
+
+body.light-mode .movie-details-description {
+  color: #334155;
+}
+
+body.light-mode .movie-details-bottom-sheet {
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+body.light-mode .sheet-row {
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+body.light-mode .sheet-label {
+  color: #64748b;
+}
+
+body.light-mode .sheet-value {
+  color: #0f172a;
+}
+
+/* Watch Player Modal Styling */
+.watch-player-modal {
+  background-color: #0b0c10;
+  transition: background-color 0.4s ease;
+}
+
+.watch-player-bar {
+  background-color: #111;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+.watch-player-select {
+  background-color: #222;
+  color: white;
+  border: 1px solid #333;
+  transition: all 0.25s ease;
+}
+
+.watch-player-close {
+  color: white;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.watch-player-close:hover {
+  transform: scale(1.15);
+  color: #e50914;
+}
+
+body.light-mode .watch-player-modal {
+  background-color: #f8fafc !important;
+}
+
+body.light-mode .watch-player-bar {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-mode .watch-player-select {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(203, 213, 225, 0.9) !important;
+}
+
+body.light-mode .watch-player-close {
+  color: #0f172a !important;
+}
+
+body.light-mode .watch-player-close:hover {
+  color: #e50914 !important;
+}
