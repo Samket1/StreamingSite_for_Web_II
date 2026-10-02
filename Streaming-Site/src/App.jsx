@@ -107,16 +107,36 @@ function App() {
   }
 
   useEffect(() => {
-    if (search.length > 2) {
-      fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${search}`)
-        .then(res => res.json())
-        .then(data => {
-          setSearchResults((data.results || []).filter(item => item.media_type !== 'person'))
-        })
-    } else {
-      setSearchResults([])
+    const trimmed = search.trim();
+    if (!trimmed) {
+      setSearchResults([]);
+      return;
     }
-  }, [search])
+
+    // 1. Instant local search from all loaded categories
+    const allLocal = [...movies, ...topRated, ...action, ...comedy, ...horror];
+    const localMatches = allLocal.filter(m => 
+      (m.title || m.name || '').toLowerCase().includes(trimmed.toLowerCase())
+    );
+    if (localMatches.length > 0) {
+      setSearchResults(localMatches);
+    }
+
+    // 2. Live TMDB API search with encoded query
+    fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(trimmed)}`)
+      .then(res => res.json())
+      .then(data => {
+        const tmdbResults = (data.results || []).filter(item => item.media_type !== 'person');
+        if (tmdbResults.length > 0) {
+          setSearchResults(tmdbResults);
+        } else if (localMatches.length === 0) {
+          setSearchResults([]);
+        }
+      })
+      .catch(err => {
+        console.error("Search fetch error:", err);
+      });
+  }, [search, movies, topRated, action, comedy, horror])
 
   useEffect(() => {
     const type = activeTab === "Series" ? "tv" : "movie";
@@ -338,7 +358,7 @@ function App() {
           setSearch={setSearch}
           isClosing={isClosing}
           closeSearch={closeSearch}
-          filterMovies={searchResults}
+          filterMovies={search.trim() === "" ? movies : searchResults}
           watchlist={watchlist}
           toggleWatchlist={toggleWatchlist}
           setSelectedMovie={setSelectedMovie}
