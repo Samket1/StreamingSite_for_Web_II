@@ -16,7 +16,7 @@ function App() {
   const [action, setAction] = useState([])
   const [comedy, setComedy] = useState([])
   const [horror, setHorror] = useState([])
-  
+
   const [searchOpen, setSearchOpen] = useState(false)
   const [search, setSearch] = useState("")
   const [searchResults, setSearchResults] = useState([])
@@ -25,9 +25,9 @@ function App() {
   const [isSearchAnimating, setIsSearchAnimating] = useState(false)
   const [watchlist, setWatchlist] = useState([]);
   const [watchlistOpen, setWatchlistOpen] = useState(false)
-  
+
   const [selectedMovie, setSelectedMovie] = useState(null)
-  
+
   const [user, setUser] = useState(localStorage.getItem("savedUser") || null)
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authModalMode, setAuthModalMode] = useState("login")
@@ -37,6 +37,28 @@ function App() {
   const [showMoreAction, setShowMoreAction] = useState(false)
   const [showMoreComedy, setShowMoreComedy] = useState(false)
   const [showMoreHorror, setShowMoreHorror] = useState(false)
+  const [settingsDropdownOpen, setSettingsDropdownOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth <= 768 : false)
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768)
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest(".user-dropdown-container")) {
+        setSettingsDropdownOpen(false)
+      }
+    }
+    if (settingsDropdownOpen) {
+      document.addEventListener("click", handleClickOutside)
+    }
+    return () => document.removeEventListener("click", handleClickOutside)
+  }, [settingsDropdownOpen])
+
+  const movieLimit = isMobile ? 6 : 7
 
   const triggerSearchOpen = () => {
     setSearchOpen(true)
@@ -89,7 +111,7 @@ function App() {
       fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${search}`)
         .then(res => res.json())
         .then(data => {
-            setSearchResults((data.results || []).filter(item => item.media_type !== 'person'))
+          setSearchResults((data.results || []).filter(item => item.media_type !== 'person'))
         })
     } else {
       setSearchResults([])
@@ -101,21 +123,21 @@ function App() {
     setIsPageLoading(true);
 
     const actionId = type === "tv" ? "10759" : "28";
-    const horrorId = type === "tv" ? "9648" : "27"; 
+    const horrorId = type === "tv" ? "9648" : "27";
 
     Promise.all([
-        fetch(`https://api.themoviedb.org/3/trending/${type}/day?api_key=${TMDB_API_KEY}`).then(res => res.json()),
-        fetch(`https://api.themoviedb.org/3/${type}/top_rated?api_key=${TMDB_API_KEY}`).then(res => res.json()),
-        fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=${actionId}`).then(res => res.json()),
-        fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=35`).then(res => res.json()),
-        fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=${horrorId}`).then(res => res.json())
+      fetch(`https://api.themoviedb.org/3/trending/${type}/day?api_key=${TMDB_API_KEY}`).then(res => res.json()),
+      fetch(`https://api.themoviedb.org/3/${type}/top_rated?api_key=${TMDB_API_KEY}`).then(res => res.json()),
+      fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=${actionId}`).then(res => res.json()),
+      fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=35`).then(res => res.json()),
+      fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_API_KEY}&with_genres=${horrorId}`).then(res => res.json())
     ]).then(([trending, top, act, com, hor]) => {
-        setMovies(trending.results || []);
-        setTopRated(top.results || []);
-        setAction(act.results || []);
-        setComedy(com.results || []);
-        setHorror(hor.results || []);
-        setIsPageLoading(false);
+      setMovies(trending.results || []);
+      setTopRated(top.results || []);
+      setAction(act.results || []);
+      setComedy(com.results || []);
+      setHorror(hor.results || []);
+      setIsPageLoading(false);
     });
 
   }, [activeTab])
@@ -155,10 +177,10 @@ function App() {
     );
   }
 
-  const renderSection = (title, items, isExpanded, toggleExpand, defaultLimit = 6) => {
+  const renderSection = (title, items, isExpanded, toggleExpand, defaultLimit = movieLimit) => {
     if (items.length === 0) return null;
     const itemsToShow = isExpanded ? items : items.slice(0, defaultLimit);
-    
+
     return (
       <section className='movies-section' style={{ marginTop: '40px' }}>
         <h2 className='section-title'>{title}</h2>
@@ -182,14 +204,14 @@ function App() {
         </div>
         {items.length > defaultLimit && (
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-              <button 
-                  className="btn-secondary" 
-                  style={{ padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}
-                  onClick={toggleExpand}
-              >
-                  {isExpanded ? "Show Less" : "See More"} 
-                  {isExpanded ? <ChevronUp size={18}/> : <ChevronDown size={18}/>}
-              </button>
+            <button
+              className="btn-secondary"
+              style={{ padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}
+              onClick={toggleExpand}
+            >
+              {isExpanded ? "Show Less" : "See More"}
+              {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+            </button>
           </div>
         )}
       </section>
@@ -213,16 +235,99 @@ function App() {
           </button>
 
           {user ? (
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button className='login-btn logout' onClick={() => { setAuthModalMode("update"); setAuthModalOpen(true); }}>Change Password</button>
-              <button className='login-btn logout' onClick={() => { setUser(null); localStorage.removeItem("savedUser"); setWatchlist([]); }}>Logout ({user})</button>
+            <div className="user-dropdown-container" style={{ position: 'relative' }}>
+              <button
+                className='login-btn logout'
+                onClick={() => setSettingsDropdownOpen(prev => !prev)}
+                style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', padding: '8px 16px' }}
+              >
+                <span>{user}</span>
+                <ChevronDown size={16} style={{ transform: settingsDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
+              </button>
+
+              {settingsDropdownOpen && (
+                <div
+                  className="user-settings-dropdown"
+                  style={{
+                    position: 'absolute',
+                    top: 'calc(100% + 8px)',
+                    right: 0,
+                    backgroundColor: '#161922',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    borderRadius: '8px',
+                    padding: '6px',
+                    minWidth: '180px',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
+                    zIndex: 1000,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '4px'
+                  }}
+                >
+                  <button
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#e2e8f0',
+                      padding: '10px 14px',
+                      borderRadius: '6px',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      fontSize: '0.9rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      transition: 'background 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    onClick={() => {
+                      setSettingsDropdownOpen(false);
+                      setAuthModalMode("update");
+                      setAuthModalOpen(true);
+                    }}
+                  >
+                    Change Password
+                  </button>
+
+                  <div style={{ height: '1px', backgroundColor: 'rgba(255,255,255,0.08)', margin: '2px 0' }} />
+
+                  <button
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#ff4d4d',
+                      padding: '10px 14px',
+                      borderRadius: '6px',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      fontSize: '0.9rem',
+                      fontWeight: '600',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      transition: 'background 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 77, 77, 0.12)'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    onClick={() => {
+                      setSettingsDropdownOpen(false);
+                      setUser(null);
+                      localStorage.removeItem("savedUser");
+                      setWatchlist([]);
+                    }}
+                  >
+                    Log out
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <button className='login-btn' onClick={() => { setAuthModalMode("login"); setAuthModalOpen(true); }}>Sign In</button>
           )}
         </div>
       </nav>
-      
+
       {authModalOpen && (
         <SignupLogin setAuthModalOpen={setAuthModalOpen} setUser={setUser} user={user} initialMode={authModalMode} />
       )}
@@ -268,39 +373,39 @@ function App() {
         <main className='main-content'>
           {isPageLoading ? (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', flexDirection: 'column', gap: '20px' }}>
-                <Loader size={48} color="#e50914" className="spinner" />
-                <h2 style={{ color: '#fff', fontSize: '24px', fontWeight: 'bold' }}>Loading {activeTab}...</h2>
+              <Loader size={48} color="#e50914" className="spinner" />
+              <h2 style={{ color: '#fff', fontSize: '24px', fontWeight: 'bold' }}>Loading {activeTab}...</h2>
             </div>
           ) : (
             <>
               {movies.length > 0 && (
-            <div
-              className='hero-banner'
-              style={{ backgroundImage: `linear-gradient(to top, #0b0c10 0%, rgba(11, 12, 16, 0.2) 100%), url(https://image.tmdb.org/t/p/original${movies[0].backdrop_path || movies[0].poster_path})` }}
-            >
-              <div className='hero-content'>
-                <span className='hero-badge'>Featured</span>
-                <h1 className="hero-title">{movies[0].title || movies[0].name}</h1>
-                <p className="hero-desc">{movies[0].overview}</p>
-                <div className='hero-buttons'>
-                  <button className='btn-primary' onClick={() => setSelectedMovie(movies[0])}>
-                    <Play size={18} fill="currentColor" /> Play Now
-                  </button>
-                  <button className={`btn-secondary ${watchlist.some((m) => (m.id || m.movieId) == (movies[0]?.id || movies[0]?.movieId)) ? 'in-watchlist' : ''}`}
-                    onClick={() => toggleWatchlist(movies[0])}>
-                    <Bookmark size={18} fill={watchlist.some((m) => (m.id || m.movieId) == (movies[0]?.id || movies[0]?.movieId)) ? "currentColor" : "none"} />
-                    <span>{watchlist.some((m) => (m.id || m.movieId) == (movies[0]?.id || movies[0]?.movieId)) ? " In Watchlist" : " Watchlist"}</span>
-                  </button>
+                <div
+                  className='hero-banner'
+                  style={{ backgroundImage: `linear-gradient(to top, #0b0c10 0%, rgba(11, 12, 16, 0.2) 100%), url(https://image.tmdb.org/t/p/original${movies[0].backdrop_path || movies[0].poster_path})` }}
+                >
+                  <div className='hero-content'>
+                    <span className='hero-badge'>Featured</span>
+                    <h1 className="hero-title">{movies[0].title || movies[0].name}</h1>
+                    <p className="hero-desc">{movies[0].overview}</p>
+                    <div className='hero-buttons'>
+                      <button className='btn-primary' onClick={() => setSelectedMovie(movies[0])}>
+                        <Play size={18} fill="currentColor" /> Play Now
+                      </button>
+                      <button className={`btn-secondary ${watchlist.some((m) => (m.id || m.movieId) == (movies[0]?.id || movies[0]?.movieId)) ? 'in-watchlist' : ''}`}
+                        onClick={() => toggleWatchlist(movies[0])}>
+                        <Bookmark size={18} fill={watchlist.some((m) => (m.id || m.movieId) == (movies[0]?.id || movies[0]?.movieId)) ? "currentColor" : "none"} />
+                        <span>{watchlist.some((m) => (m.id || m.movieId) == (movies[0]?.id || movies[0]?.movieId)) ? " In Watchlist" : " Watchlist"}</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          )}
+              )}
 
-          {renderSection("Trending Now", movies, showMoreTrending, () => setShowMoreTrending(!showMoreTrending), 6)}
-          {renderSection("Critically Acclaimed", topRated, showMoreTopRated, () => setShowMoreTopRated(!showMoreTopRated), 6)}
-          {renderSection("Epic Action", action, showMoreAction, () => setShowMoreAction(!showMoreAction), 6)}
-          {renderSection("Laugh Out Loud", comedy, showMoreComedy, () => setShowMoreComedy(!showMoreComedy), 6)}
-          {renderSection(activeTab === "Series" ? "Unsolved Mysteries" : "Terrifying Horror", horror, showMoreHorror, () => setShowMoreHorror(!showMoreHorror), 6)}
+              {renderSection("Trending Now", movies, showMoreTrending, () => setShowMoreTrending(!showMoreTrending), movieLimit)}
+              {renderSection("Critically Acclaimed", topRated, showMoreTopRated, () => setShowMoreTopRated(!showMoreTopRated), movieLimit)}
+              {renderSection("Epic Action", action, showMoreAction, () => setShowMoreAction(!showMoreAction), movieLimit)}
+              {renderSection("Laugh Out Loud", comedy, showMoreComedy, () => setShowMoreComedy(!showMoreComedy), movieLimit)}
+              {renderSection(activeTab === "Series" ? "Unsolved Mysteries" : "Terrifying Horror", horror, showMoreHorror, () => setShowMoreHorror(!showMoreHorror), movieLimit)}
             </>
           )}
         </main>
