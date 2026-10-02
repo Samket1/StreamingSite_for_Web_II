@@ -3,9 +3,16 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("Connected To MongoDB!"))
-    .catch((err) => console.log("Failed to connect: ", err));
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI);
+        console.log("Connected To MongoDB!");
+    } catch (err) {
+        console.error("Failed to connect: ", err.message);
+    }
+};
+
+connectDB();
 
 const app = express();
 const cors = require('cors');
