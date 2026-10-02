@@ -36,8 +36,11 @@ export default function SignupLogin({ setAuthModalOpen, setUser, user, initialMo
             setIsLoading(false);
             if (response.ok) {
                 if (authMode === "login") {
+                    if (data.token) {
+                        localStorage.setItem("token", data.token);
+                    }
+                    localStorage.removeItem("savedUser");
                     setUser(data.username);
-                    localStorage.setItem("savedUser", data.username);
                     setAuthModalOpen(false);
                 } else if (authMode === "register") {
                     setAuthMessage("Success! Now please sign in.");

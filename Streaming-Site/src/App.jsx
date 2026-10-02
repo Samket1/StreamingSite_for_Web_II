@@ -50,7 +50,7 @@ function App() {
   const [selectedMovie, setSelectedMovie] = useState(null)
   const [isMovieLoading, setIsMovieLoading] = useState(false)
 
-  const [user, setUser] = useState(localStorage.getItem("savedUser") || null)
+  const [user, setUser] = useState(getUserFromToken())
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authModalMode, setAuthModalMode] = useState("login")
 
@@ -456,7 +456,8 @@ function App() {
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     onClick={() => { 
                       setSettingsDropdownOpen(false);
-                      setUser(null); 
+                      setUser(null);
+                      localStorage.removeItem("token");
                       localStorage.removeItem("savedUser"); 
                       setWatchlist([]); 
                     }}

@@ -1,6 +1,8 @@
 ﻿const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || 'streamdopamine_secret_jwt_key_2026';
 require('dotenv').config();
 
 const connectDB = async () => {
@@ -110,7 +112,16 @@ app.post('/api/auth/login', async (req, res) => {
         if (!isPasswordCorrect) {
             return res.status(400).json({ error: "Incorrect username or password!" });
         }
-        res.status(200).json({ message: "Login successful!", username: user.username });
+        const token = jwt.sign(
+            { id: user._id, username: user.username },
+            JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+        res.status(200).json({ 
+            message: "Login successful!", 
+            token: token, 
+            username: user.username 
+        });
     }
     catch (error) {
         res.status(500).json({ error: "Server error during login." });
