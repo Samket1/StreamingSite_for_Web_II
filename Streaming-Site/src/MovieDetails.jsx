@@ -2,8 +2,12 @@
 import { ArrowLeft, Play, Bookmark, Star, Clapperboard, X, Server } from 'lucide-react';
 import './MovieDetails.css';
 
-export default function MovieDetails({ movie, onBack, isWatched, onToggleWatch }) {
-  const [isPlaying, setIsPlaying] = useState(false);
+export default function MovieDetails({ movie, onBack, isWatched, onToggleWatch, initialPlaying = false, onPlayToggle }) {
+  const [isPlaying, setIsPlaying] = useState(initialPlaying);
+
+  React.useEffect(() => {
+    setIsPlaying(initialPlaying);
+  }, [initialPlaying]);
   const [videoSource, setVideoSource] = useState('vidsrc');
 
   const [season, setSeason] = useState(1);
@@ -75,7 +79,7 @@ export default function MovieDetails({ movie, onBack, isWatched, onToggleWatch }
         </div>
 
         <div className="movie-details-actions">
-          <button className="btn-primary" onClick={() => setIsPlaying(true)}>
+          <button className="btn-primary" onClick={() => { setIsPlaying(true); if (onPlayToggle) onPlayToggle(true); }}>
             <Play size={20} fill="currentColor" /> Play Now
           </button>
           <button className={`btn-secondary ${isWatched ? 'in-watchlist' : ''}`} onClick={onToggleWatch}>
@@ -152,7 +156,7 @@ export default function MovieDetails({ movie, onBack, isWatched, onToggleWatch }
 
             {/* Close Button */}
             <button
-              onClick={() => setIsPlaying(false)}
+              onClick={() => { setIsPlaying(false); if (onPlayToggle) onPlayToggle(false); }}
               style={{
                 background: 'transparent', border: 'none', color: 'white',
                 cursor: 'pointer', display: 'flex', alignItems: 'center'
