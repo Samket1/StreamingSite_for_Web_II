@@ -531,11 +531,7 @@ function App() {
                     <h1 className="hero-title">{movies[0].title || movies[0].name}</h1>
                     <p className="hero-desc">{movies[0].overview}</p>
                     <div className='hero-buttons'>
-                      <button className='btn-primary' onClick={() => {
-                        const id = movies[0].id || movies[0].movieId;
-                        setSelectedMovie(movies[0]);
-                        navigate(`/movies/${id}/watch`);
-                      }}>
+                      <button className='btn-primary' onClick={() => openMovieDetails(movies[0])}>
                         <Play size={18} fill="currentColor" /> Play Now
                       </button>
                       <button className={`btn-secondary ${watchlist.some((m) => (m.id || m.movieId) == (movies[0]?.id || movies[0]?.movieId)) ? 'in-watchlist' : ''}`}
