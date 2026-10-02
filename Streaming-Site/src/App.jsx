@@ -95,7 +95,9 @@ function App() {
       setActiveTab('Series');
       setSearchOpen(false);
       setWatchlistOpen(false);
-    } else if (location.pathname === '/home' || location.pathname === '/') {
+    } else if (location.pathname === '/home') {
+      navigate('/', { replace: true });
+    } else if (location.pathname === '/') {
       setActiveTab('Home');
       setSearchOpen(false);
       setWatchlistOpen(false);
@@ -157,13 +159,13 @@ function App() {
       setIsClosing(false);
       setSearch("");
       setSearchResults([]);
-      navigate(activeTab === 'Movies' ? '/movies' : (activeTab === 'Series' ? '/series' : '/home'));
+      navigate(activeTab === 'Movies' ? '/movies' : (activeTab === 'Series' ? '/series' : '/'));
     }, 220);
   }
 
   const closeWatchlist = () => {
     setWatchlistOpen(false);
-    navigate(activeTab === 'Movies' ? '/movies' : (activeTab === 'Series' ? '/series' : '/home'));
+    navigate(activeTab === 'Movies' ? '/movies' : (activeTab === 'Series' ? '/series' : '/'));
   }
 
   const openMovieDetails = (movie) => {
@@ -353,7 +355,7 @@ function App() {
   return (
     <div className='app-container'>
       <nav className='navbar'>
-        <div className="nav-logo" onClick={() => { setActiveTab('Home'); navigate('/home'); }} style={{ cursor: 'pointer' }}>
+        <div className="nav-logo" onClick={() => { setActiveTab('Home'); navigate('/'); }} style={{ cursor: 'pointer' }}>
           <span className="logo-icon"><Film size={26} /></span>
           <span className="logo-text">
             <span className="desktop-logo">Stream<span className="logo-highlight">Dopamine</span></span>
@@ -499,7 +501,7 @@ function App() {
 
       <div className='app-body'>
         <aside className="sidebar">
-          <button className={`sidebar-item ${activeTab === 'Home' ? 'active' : ''}`} onClick={() => { setActiveTab('Home'); navigate('/home'); }}>
+          <button className={`sidebar-item ${activeTab === 'Home' ? 'active' : ''}`} onClick={() => { setActiveTab('Home'); navigate('/'); }}>
             <Home size={22} /><span>Home</span>
           </button>
           <button className={`sidebar-item ${activeTab === 'Movies' ? 'active' : ''}`} onClick={() => { setActiveTab('Movies'); navigate('/movies'); }}>
