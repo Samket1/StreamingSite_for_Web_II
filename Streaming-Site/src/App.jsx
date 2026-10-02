@@ -10,6 +10,23 @@ import SignupLogin from './Signup_Login';
 
 const TMDB_API_KEY = "969b4d22cf39488a0c72c57da978591a";
 
+const getUserFromToken = () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (token && token.includes('.')) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.exp && Date.now() >= payload.exp * 1000) {
+        localStorage.removeItem("token");
+        return null;
+      }
+      return payload.username || null;
+    }
+  } catch (e) {
+    // silently fallback
+  }
+  return localStorage.getItem("savedUser") || null;
+};
+
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
